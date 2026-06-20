@@ -11,10 +11,10 @@ const stack = ["Python", "FastAPI", "Temporal", "PostgreSQL", "React"];
 ---
 
 <BaseLayout>
-  <!-- HERO：影（暗场）+ 光（流水线光迹） -->
+  <!-- HERO：影（暗场）+ 全宽流水线 Figure -->
   <section class="canopy-light text-[var(--color-paper)]">
-    <div class="u-container grid items-center gap-14 py-20 md:py-28 lg:grid-cols-[1.04fr_0.96fr]">
-      <div>
+    <div class="u-container py-20 md:py-24">
+      <div class="max-w-3xl">
         <p class="eyebrow eyebrow--onink reveal">{hero.eyebrow}</p>
         <h1 class="reveal reveal-2 mt-6 text-display-lg font-bold leading-[1.04] text-[var(--color-paper)]">
           {hero.titleLines[0]}<br />{hero.titleLines[1]}
@@ -28,20 +28,25 @@ const stack = ["Python", "FastAPI", "Temporal", "PostgreSQL", "React"];
           </a>
           <a href={url(hero.secondaryCta.href)} class="btn btn-ghost--onink btn-ghost">{hero.secondaryCta.label}</a>
         </div>
-        <div class="reveal reveal-4 mt-12 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[color-mix(in_oklab,var(--color-paper)_12%,transparent)] pt-6">
-          <span class="eyebrow !text-[0.62rem] !tracking-[0.18em] text-[var(--color-stone-2)]">BUILT ON</span>
-          {stack.map((s) => (
-            <span class="font-[var(--font-mono)] text-[0.78rem] text-[var(--color-mist)]">{s}</span>
-          ))}
+      </div>
+
+      <!-- 全宽流水线 Figure -->
+      <div class="reveal reveal-4 mt-16 md:mt-20">
+        <div class="mb-4 flex items-baseline justify-between">
+          <span class="eyebrow eyebrow--onink">DIGITAL-HUMAN PIPELINE</span>
+          <span class="font-[var(--font-mono)] text-[0.7rem] text-[var(--color-mist)]">workflow.run()</span>
+        </div>
+        <div class="border-y border-[color-mix(in_oklab,var(--color-paper)_14%,transparent)] py-7">
+          <Pipeline />
         </div>
       </div>
 
-      <div class="reveal reveal-2 rounded-3xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[color-mix(in_oklab,#000_22%,transparent)] p-6 md:p-8">
-        <div class="mb-6 flex items-center justify-between">
-          <span class="eyebrow eyebrow--onink">DIGITAL-HUMAN PIPELINE</span>
-          <span class="font-[var(--font-mono)] text-[0.68rem] text-[var(--color-mist)]">workflow.run()</span>
-        </div>
-        <Pipeline />
+      <!-- BUILT ON -->
+      <div class="reveal reveal-4 mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[color-mix(in_oklab,var(--color-paper)_12%,transparent)] pt-6">
+        <span class="eyebrow !text-[0.62rem] !tracking-[0.18em] text-[var(--color-stone-2)]">BUILT ON</span>
+        {stack.map((s) => (
+          <span class="font-[var(--font-mono)] text-[0.78rem] text-[var(--color-mist)]">{s}</span>
+        ))}
       </div>
     </div>
   </section>
