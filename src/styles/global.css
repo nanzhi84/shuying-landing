@@ -96,6 +96,18 @@
     overflow-x: hidden;
   }
 
+  /* 顶部滚动进度细线(随滚动伸长) */
+  #scroll-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    height: 2px;
+    width: 0;
+    background: var(--color-sun);
+    z-index: 60;
+    pointer-events: none;
+    will-change: width;
+  }
+
   ::selection {
     background-color: color-mix(in oklab, var(--color-sun) 35%, transparent);
     color: var(--color-ink);

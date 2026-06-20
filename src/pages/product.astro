@@ -39,19 +39,19 @@ const principles = [
   <!-- 完整流水线 -->
   <section class="u-container py-16">
     <div class="canopy-light rounded-3xl border border-[color-mix(in_oklab,var(--color-ink)_30%,transparent)] px-6 py-12 text-[var(--color-paper)] md:px-12">
-      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <p class="eyebrow eyebrow--onink mb-4">THE 16 NODES</p>
-          <h2 class="text-display-sm font-semibold text-[var(--color-paper)]">每个节点，只做一件事。</h2>
-          <p class="mt-5 max-w-md text-[1.02rem] leading-relaxed text-[var(--color-mist)]">
-            一个 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">DigitalHumanVideo</code> Job 触发一次 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">WorkflowRun</code>，按固定节点序执行。每个节点输入哈希可复用、可 resume、可 retry，产出带类型 artifacts 与运行报告。
-          </p>
-          <ul class="mt-7 space-y-3 text-[0.92rem] text-[var(--color-mist)]">
-            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>Temporal 编排，独立 worker 消费 <span class="font-[var(--font-mono)]">cutagent-production</span> 队列</li>
-            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>canonical input hash 驱动复用，避免重复算力</li>
-            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>WebSocket <span class="font-[var(--font-mono)]">/ws/runs/&#123;id&#125;</span> 实时进度</li>
-          </ul>
-        </div>
+      <div class="max-w-2xl">
+        <p class="eyebrow eyebrow--onink mb-4">THE 16 NODES</p>
+        <h2 class="text-display-sm font-semibold text-[var(--color-paper)]">每个节点，只做一件事。</h2>
+        <p class="mt-5 max-w-md text-[1.02rem] leading-relaxed text-[var(--color-mist)]">
+          一个 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">DigitalHumanVideo</code> Job 触发一次 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">WorkflowRun</code>，按固定节点序执行。每个节点输入哈希可复用、可 resume、可 retry，产出带类型 artifacts 与运行报告。
+        </p>
+        <ul class="mt-7 space-y-3 text-[0.92rem] text-[var(--color-mist)]">
+          <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>Temporal 编排，独立 worker 消费 <span class="font-[var(--font-mono)]">cutagent-production</span> 队列</li>
+          <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>canonical input hash 驱动复用，避免重复算力</li>
+          <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>WebSocket <span class="font-[var(--font-mono)]">/ws/runs/&#123;id&#125;</span> 实时进度</li>
+        </ul>
+      </div>
+      <div class="mt-12 border-y border-[color-mix(in_oklab,var(--color-paper)_14%,transparent)] py-7">
         <Pipeline />
       </div>
     </div>

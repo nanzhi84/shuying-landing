@@ -1,5 +1,7 @@
 # build output
 dist/
+# superpowers brainstorm scratch (visual companion mockups)
+.superpowers/
 # generated types & cache
 .astro/
 # dependencies
