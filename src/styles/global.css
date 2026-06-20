@@ -104,6 +104,7 @@
     width: 0;
     background: var(--color-sun);
     z-index: 60;
+    pointer-events: none;
     will-change: width;
   }
 
