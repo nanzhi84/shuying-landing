@@ -1,7 +1,6 @@
 ---
 /**
- * 树影字标：分层的针叶林剪影 —— 顶层是光（日光琥珀），向下逐层沉入影（林墨）。
- * 字面具象「树 · 影 · 光」。
+ * 树影字标:纯文字(图标已删)。tone 控墨色,showWordmark 控是否显示。
  */
 interface Props {
   tone?: "ink" | "paper";
@@ -10,16 +9,9 @@ interface Props {
 }
 const { tone = "ink", showWordmark = true, class: cls = "" } = Astro.props;
 const main = tone === "paper" ? "var(--color-paper)" : "var(--color-ink)";
-const mid = tone === "paper" ? "var(--color-pine-bright)" : "var(--color-pine)";
 ---
 
-<span class={`logo inline-flex items-center gap-2.5 ${cls}`} aria-label="树影 Shuying">
-  <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" class="shrink-0">
-    <path d="M16 3.5 L23 13 H9 Z" fill="var(--color-sun)" />
-    <path d="M16 11 L25.5 22 H6.5 Z" fill={mid} />
-    <path d="M16 18 L28.5 30 H3.5 Z" fill={main} />
-    <rect x="14.6" y="28.5" width="2.8" height="2.5" rx="0.4" fill={main} />
-  </svg>
+<span class={`logo inline-flex items-center ${cls}`} aria-label="树影 Shuying">
   {showWordmark && (
     <span class="flex items-baseline gap-1.5 leading-none">
       <span
