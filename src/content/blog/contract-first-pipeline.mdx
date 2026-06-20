@@ -1,0 +1,83 @@
+---
+title: "Contract-first：把数字人成片拆成 16 个只做一件事的节点"
+description: "可信的量产，来自把一个庞大的「生成视频」黑箱，拆成一串边界清晰、各自只做一件事、产出带类型 artifact 的节点。这是 Cutagent 生产流水线的架构选择。"
+pubDate: 2026-05-28
+author: "树影 · 平台团队"
+tags: ["架构", "工程", "工作流"]
+cover: "/covers/contract-first.svg"
+coverAlt: "以契约连接的节点图"
+readingTime: "8 分钟"
+---
+
+import Figure from "../../components/mdx/Figure.astro";
+import Callout from "../../components/mdx/Callout.astro";
+
+「用 AI 生成一条数字人口播视频」听起来像一个动作，但它其实是一长串决策的合谋：解析创意、合成语音、规划素材、对齐旁白、编排立绘与 B-roll、口型同步、渲染、混音、导出……
+
+如果把这一切塞进一个大函数，你会得到一个**无法追溯、无法复用、无法局部重试**的黑箱。Demo 阶段它能跑，量产阶段它会让你在凌晨三点对着一条失败的成片束手无策。
+
+我们的选择是反过来：把这个黑箱拆成 **16 个只做一件事的节点**，并用强契约把它们焊在一起。
+
+## 一个 Job，一次 WorkflowRun，16 个节点
+
+一个 `DigitalHumanVideo` Job 触发一次 `WorkflowRun`，按固定节点序执行：
+
+```text
+Validate → LoadCaseContext → ResolveCreativeIntent → TTS
+  → 素材规划 → 旁白对齐 → 立绘/B-roll/风格/时间线规划 → 立绘轨构建
+  → LipSync → 渲染 → 字幕+BGM 混音 → 导出 → 收尾报告
+```
+
+<Figure
+  src="/covers/contract-first.svg"
+  alt="API 节点与产物之间由契约连接的有向图"
+  caption="图 1 · 每个节点消费上游 artifact、产出带类型的下游 artifact，边界即契约。"
+  credit="Cutagent · Pipeline"
+/>
+
+每个节点遵守同一套纪律：
+
+- **只做一件事。** 节点不跨职责，便于推理、测试与替换。
+- **输入哈希可复用。** 每个节点的输入有 canonical hash；相同输入直接复用上次 artifact，不重复烧算力。
+- **产出带类型的 artifact。** 不是一坨文件，而是有 schema、可校验的 `ArtifactRef`。
+
+## 为什么是 Temporal，而不是手写队列
+
+固定节点序、可 resume、可 retry、可 cancel —— 这些都不是「写个任务队列」就能拿到的语义。我们用 Temporal 做编排，由独立 worker 消费生产队列。
+
+<Callout type="note" title="三种控制语义">
+**Resume** 复用已有的有效 artifact 接着跑；**Retry** 全新重跑一遍；**Cancel / Force-cancel** 干净地中止。三者都建立在「节点产出可寻址、输入可哈希」之上。
+</Callout>
+
+这带来一个很实际的好处：当第 12 个节点（口型同步）因为 provider 抖动失败时，我们不必从第 1 个节点重头再来——前 11 个节点的 artifact 仍然有效，resume 即可。在量产规模下，这是算力成本与交付时效的分水岭。
+
+## Contract-first：FastAPI 即 OpenAPI 唯一事实源
+
+节点之间靠契约连接，系统对外也一样。我们把 **FastAPI 暴露的 OpenAPI 当作唯一事实源**：
+
+- 领域类型是 `packages/core/contracts` 里的 Pydantic v2 模型，跨包共享只走它。
+- 前端 TypeScript 类型由 OpenAPI 自动生成，CI 校验漂移——契约一改，类型必须同步，否则红。
+- 任何 API 形状的改动，都必须重新生成前端 schema，没有「口头约定」的余地。
+
+<Callout type="tip" title="契约不是文档，是闸门">
+当契约能让 CI 变红，它才真正起作用。文档会过期，但一道会拦住合并的闸门不会。
+</Callout>
+
+## 可插拔：存储、运行时、Provider 全部可换
+
+因为边界清晰，我们可以让底座可插拔而不动业务逻辑：
+
+| 维度 | 选项 |
+| --- | --- |
+| 存储后端 | `memory`（测试/演示）· `sqlalchemy`（生产） |
+| 工作流运行时 | `local` · `temporal` |
+| 对象存储 | MinIO · S3 · 阿里云 OSS（分层 durable / ephemeral） |
+| Provider | 按能力分发：llm / vlm / tts / asr / lipsync / image |
+
+Provider 走统一网关，真实路径需要「插件 + 已激活 secret」，否则**显式报错而非静默降级**。secret 只存于隔离的 SecretStore，永不进入环境变量或代码。
+
+## 架构即承诺
+
+这套架构不是为了好看。它是树影对客户的一个承诺：**你的每一条成片，都是可追溯、可复用、可被追问的。** 哪个节点产出了什么、哪一步降级了、用了哪个 provider、花了多少——全部有据可查。
+
+把一件事拆成 16 个只做一件事的节点，听起来是在增加复杂度。但在量产的尺度上，它恰恰是**唯一**能把复杂度关进笼子的方式。

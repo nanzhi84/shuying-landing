@@ -1,0 +1,83 @@
+---
+import Logo from "./Logo.astro";
+import { nav } from "../lib/site";
+import { url } from "../lib/url";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+function isActive(href: string) {
+  const target = url(href).replace(/\/$/, "");
+  if (target === url("/").replace(/\/$/, "")) return path === target;
+  return path === target || path.startsWith(target + "/");
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] bg-[color-mix(in_oklab,var(--color-paper)_82%,transparent)] backdrop-blur-md">
+  <nav class="u-container flex h-[4.25rem] items-center justify-between" aria-label="主导航">
+    <a href={url("/")} class="-ml-1 rounded px-1 py-1" aria-label="树影首页">
+      <Logo tone="ink" />
+    </a>
+
+    <!-- 桌面导航 -->
+    <div class="hidden items-center gap-1 md:flex">
+      {nav.map((item) => (
+        <a
+          href={url(item.href)}
+          class:list={[
+            "relative px-3.5 py-2 text-[0.95rem] font-medium text-[var(--color-stone)] transition-colors hover:text-[var(--color-ink)]",
+            isActive(item.href) && "!text-[var(--color-ink)]",
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+          {isActive(item.href) && (
+            <span class="absolute inset-x-3.5 -bottom-px h-px bg-[var(--color-pine)]"></span>
+          )}
+        </a>
+      ))}
+      <a href={url("/contact")} class="btn btn-primary ml-3 !px-4 !py-2 !text-[0.9rem]">
+        合作咨询
+      </a>
+    </div>
+
+    <!-- 移动端开关 -->
+    <button
+      id="nav-toggle"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[color-mix(in_oklab,var(--color-ink)_14%,transparent)] md:hidden"
+      aria-label="打开菜单"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <line x1="3" y1="7" x2="21" y2="7" /><line x1="3" y1="13" x2="21" y2="13" /><line x1="3" y1="19" x2="21" y2="19" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- 移动端面板 -->
+  <div id="mobile-menu" hidden class="border-t border-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] bg-[var(--color-paper)] md:hidden">
+    <div class="u-container flex flex-col py-3">
+      {nav.map((item) => (
+        <a
+          href={url(item.href)}
+          class:list={[
+            "rounded-lg px-2 py-3 text-base font-medium text-[var(--color-stone)] hover:text-[var(--color-ink)]",
+            isActive(item.href) && "!text-[var(--color-ink)]",
+          ]}
+        >{item.label}</a>
+      ))}
+      <a href={url("/contact")} class="btn btn-primary mt-2 justify-center">合作咨询</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    const open = menu?.hasAttribute("hidden");
+    if (open) menu?.removeAttribute("hidden");
+    else menu?.setAttribute("hidden", "");
+    toggle.setAttribute("aria-expanded", String(Boolean(open)));
+    toggle.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
+  });
+</script>

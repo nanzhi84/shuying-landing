@@ -1,0 +1,48 @@
+---
+import Logo from "./Logo.astro";
+import { site, nav, socials } from "../lib/site";
+import { url } from "../lib/url";
+---
+
+<footer class="canopy-light mt-24 text-[var(--color-paper)]">
+  <div class="u-container py-16">
+    <div class="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <Logo tone="paper" />
+        <p class="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-[var(--color-mist)]">
+          {site.tagline}。<br />为 B 端品牌，确定性地量产数字人短视频。
+        </p>
+      </div>
+
+      <div>
+        <p class="eyebrow eyebrow--onink mb-4">站点</p>
+        <ul class="space-y-2.5">
+          {nav.map((item) => (
+            <li>
+              <a href={url(item.href)} class="text-[0.95rem] text-[var(--color-mist)] transition-colors hover:text-[var(--color-paper)]">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="eyebrow eyebrow--onink mb-4">联系</p>
+        <ul class="space-y-2.5 text-[0.95rem] text-[var(--color-mist)]">
+          <li><a href={`mailto:${site.email}`} class="transition-colors hover:text-[var(--color-paper)]">{site.email}</a></li>
+          <li><a href={`mailto:${site.bizEmail}`} class="transition-colors hover:text-[var(--color-paper)]">{site.bizEmail}</a></li>
+          <li>{site.location}</li>
+          <li class="flex gap-4 pt-2">
+            {socials.map((s) => (
+              <a href={s.href} class="transition-colors hover:text-[var(--color-paper)]" target="_blank" rel="noopener noreferrer">{s.label}</a>
+            ))}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-3 border-t border-[color-mix(in_oklab,var(--color-paper)_14%,transparent)] pt-6 text-[0.8rem] text-[var(--color-stone-2)] md:flex-row md:items-center md:justify-between">
+      <p>© {site.year} {site.nameCN} {site.nameEN}. 保留所有权利。</p>
+      <p class="font-[var(--font-mono)] tracking-wider">{site.product} · CASE-FIRST CONTENT FACTORY</p>
+    </div>
+  </div>
+</footer>

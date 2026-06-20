@@ -1,0 +1,29 @@
+---
+import type { Capability } from "../lib/site";
+interface Props {
+  cap: Capability;
+}
+const { cap } = Astro.props;
+---
+
+<article
+  class="group relative flex flex-col rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-[color-mix(in_oklab,var(--color-pine)_45%,transparent)] hover:shadow-[0_24px_60px_-40px_rgba(20,36,28,0.55)]"
+  data-reveal
+>
+  <div class="flex items-center justify-between">
+    <span class="font-[var(--font-mono)] text-[1.4rem] font-medium text-[color-mix(in_oklab,var(--color-pine)_60%,var(--color-stone))]">{cap.index}</span>
+    <span class="eyebrow eyebrow--dim !tracking-[0.12em]">{cap.tag}</span>
+  </div>
+
+  <h3 class="mt-5 text-[1.22rem] font-semibold text-[var(--color-ink)]">{cap.name}</h3>
+  <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-stone)]">{cap.summary}</p>
+
+  <ul class="mt-5 space-y-2.5 border-t border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] pt-5">
+    {cap.points.map((pt) => (
+      <li class="flex gap-2.5 text-[0.875rem] leading-snug text-[var(--color-stone)]">
+        <span class="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-sun)]"></span>
+        <span>{pt}</span>
+      </li>
+    ))}
+  </ul>
+</article>

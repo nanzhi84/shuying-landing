@@ -1,0 +1,56 @@
+---
+import type { Demo } from "../lib/site";
+interface Props {
+  demo: Demo;
+  /** 上线后填真实视频地址即变成可播放 */
+  src?: string;
+  poster?: string;
+}
+const { demo, src, poster } = Astro.props;
+const aspect = demo.ratio === "9:16" ? "9 / 16" : "16 / 9";
+---
+
+<figure class="group flex flex-col" data-reveal>
+  <div
+    class="relative overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-ink)]"
+    style={`aspect-ratio:${aspect}`}
+  >
+    {src ? (
+      <video
+        class="h-full w-full object-cover"
+        controls
+        preload="none"
+        playsinline
+        poster={poster}
+      >
+        <source src={src} />
+      </video>
+    ) : (
+      <div class="canopy-light absolute inset-0 flex flex-col justify-between p-5">
+        <div class="flex items-center justify-between">
+          <span class="eyebrow eyebrow--onink !text-[0.6rem]">{demo.meta}</span>
+          <span class="rounded-full border border-[color-mix(in_oklab,var(--color-paper)_22%,transparent)] px-2.5 py-1 font-[var(--font-mono)] text-[0.58rem] tracking-wider text-[var(--color-mist)]">
+            DEMO 占位
+          </span>
+        </div>
+
+        <div class="flex flex-1 items-center justify-center">
+          <span class="flex h-16 w-16 items-center justify-center rounded-full border border-[color-mix(in_oklab,var(--color-paper)_30%,transparent)] bg-[color-mix(in_oklab,var(--color-paper)_8%,transparent)] backdrop-blur-sm transition-transform duration-500 group-hover:scale-110">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--color-sun)" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </span>
+        </div>
+
+        <p class="font-[var(--font-mono)] text-[0.6rem] leading-relaxed text-[var(--color-stone-2)]">
+          // 视频将在此处呈现
+        </p>
+      </div>
+    )}
+  </div>
+
+  <figcaption class="mt-4">
+    <h3 class="text-[1.05rem] font-semibold text-[var(--color-ink)]">{demo.title}</h3>
+    <p class="mt-1.5 text-[0.9rem] leading-relaxed text-[var(--color-stone)]">{demo.desc}</p>
+  </figcaption>
+</figure>

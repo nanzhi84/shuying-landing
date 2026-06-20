@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { site } from "../lib/site";
+
+const channels = [
+  { tag: "商务合作", title: "为品牌量产内容", desc: "需要规模化、合规、可审计的数字人短视频产能？聊聊你的内容场景。", email: site.bizEmail },
+  { tag: "投资人", title: "AI 内容基础设施", desc: "我们正在进行新一轮融资对话。索取材料或预约深聊。", email: site.email },
+  { tag: "加入我们", title: "一起造水电煤", desc: "工程、媒体、AI、产品 —— 如果你也相信「可信量产」，带上你的故事。", email: site.email },
+];
+---
+
+<BaseLayout title="联系我们" description="联系树影 —— 商务合作、融资对话、加入我们。">
+  <section class="u-container pb-6 pt-20 md:pt-28">
+    <p class="eyebrow mb-4">GET IN TOUCH</p>
+    <h1 class="max-w-3xl text-display font-bold leading-[1.06] text-[var(--color-ink)]">聊聊吧。</h1>
+    <p class="mt-6 max-w-xl text-[1.1rem] leading-relaxed text-[var(--color-stone)]">
+      无论是合作、融资还是加入，最快的方式是直接发邮件给我们 —— 通常一个工作日内回复。
+    </p>
+  </section>
+
+  <!-- 渠道 -->
+  <section class="u-container py-12">
+    <div class="grid gap-5 md:grid-cols-3">
+      {channels.map((c) => (
+        <a href={`mailto:${c.email}?subject=${encodeURIComponent("[" + c.tag + "] 来自树影官网")}`}
+           class="group flex flex-col rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-[color-mix(in_oklab,var(--color-pine)_45%,transparent)]"
+           data-reveal>
+          <p class="eyebrow eyebrow--dim">{c.tag}</p>
+          <h3 class="mt-4 text-[1.18rem] font-semibold text-[var(--color-ink)]">{c.title}</h3>
+          <p class="mt-3 flex-1 text-[0.92rem] leading-relaxed text-[var(--color-stone)]">{c.desc}</p>
+          <span class="mt-5 inline-flex items-center gap-2 font-[var(--font-mono)] text-[0.82rem] text-[var(--color-pine)]">
+            {c.email}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 表单（零后端：提交时组装 mailto） -->
+  <section class="u-container py-16">
+    <div class="grid gap-12 rounded-3xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_45%,var(--color-paper))] p-8 md:grid-cols-[0.8fr_1.2fr] md:p-12">
+      <SectionHeading eyebrow="OR WRITE TO US" title="留下信息，我们找你。" lead="点击发送会用你的邮件客户端打开一封预填邮件。" />
+      <form id="contact-form" class="flex flex-col gap-4">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="flex flex-col gap-1.5">
+            <span class="font-[var(--font-mono)] text-[0.72rem] uppercase tracking-wider text-[var(--color-stone)]">姓名</span>
+            <input name="name" required class="rounded-lg border border-[color-mix(in_oklab,var(--color-ink)_14%,transparent)] bg-[var(--color-card)] px-3.5 py-2.5 text-[0.95rem] outline-none transition-colors focus:border-[var(--color-pine)]" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="font-[var(--font-mono)] text-[0.72rem] uppercase tracking-wider text-[var(--color-stone)]">公司 / 机构</span>
+            <input name="company" class="rounded-lg border border-[color-mix(in_oklab,var(--color-ink)_14%,transparent)] bg-[var(--color-card)] px-3.5 py-2.5 text-[0.95rem] outline-none transition-colors focus:border-[var(--color-pine)]" />
+          </label>
+        </div>
+        <label class="flex flex-col gap-1.5">
+          <span class="font-[var(--font-mono)] text-[0.72rem] uppercase tracking-wider text-[var(--color-stone)]">你的邮箱</span>
+          <input name="from" type="email" required class="rounded-lg border border-[color-mix(in_oklab,var(--color-ink)_14%,transparent)] bg-[var(--color-card)] px-3.5 py-2.5 text-[0.95rem] outline-none transition-colors focus:border-[var(--color-pine)]" />
+        </label>
+        <label class="flex flex-col gap-1.5">
+          <span class="font-[var(--font-mono)] text-[0.72rem] uppercase tracking-wider text-[var(--color-stone)]">想聊什么</span>
+          <textarea name="message" rows="4" required class="resize-y rounded-lg border border-[color-mix(in_oklab,var(--color-ink)_14%,transparent)] bg-[var(--color-card)] px-3.5 py-2.5 text-[0.95rem] outline-none transition-colors focus:border-[var(--color-pine)]"></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary mt-1 self-start">发送邮件</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ to: site.email }}>
+  const form = document.getElementById("contact-form");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const el = e.target.elements;
+    const name = el.namedItem("name").value || "";
+    const company = el.namedItem("company").value || "";
+    const from = el.namedItem("from").value || "";
+    const message = el.namedItem("message").value || "";
+    const subject = `[官网咨询] ${name}${company ? " · " + company : ""}`;
+    const body = `姓名：${name}\n公司：${company}\n邮箱：${from}\n\n${message}`;
+    window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

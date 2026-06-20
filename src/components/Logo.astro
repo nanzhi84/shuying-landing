@@ -1,0 +1,32 @@
+---
+/**
+ * 树影字标：分层的针叶林剪影 —— 顶层是光（日光琥珀），向下逐层沉入影（林墨）。
+ * 字面具象「树 · 影 · 光」。
+ */
+interface Props {
+  tone?: "ink" | "paper";
+  showWordmark?: boolean;
+  class?: string;
+}
+const { tone = "ink", showWordmark = true, class: cls = "" } = Astro.props;
+const main = tone === "paper" ? "var(--color-paper)" : "var(--color-ink)";
+const mid = tone === "paper" ? "var(--color-pine-bright)" : "var(--color-pine)";
+---
+
+<span class={`logo inline-flex items-center gap-2.5 ${cls}`} aria-label="树影 Shuying">
+  <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true" class="shrink-0">
+    <path d="M16 3.5 L23 13 H9 Z" fill="var(--color-sun)" />
+    <path d="M16 11 L25.5 22 H6.5 Z" fill={mid} />
+    <path d="M16 18 L28.5 30 H3.5 Z" fill={main} />
+    <rect x="14.6" y="28.5" width="2.8" height="2.5" rx="0.4" fill={main} />
+  </svg>
+  {showWordmark && (
+    <span class="flex items-baseline gap-1.5 leading-none">
+      <span
+        style={`color:${main}`}
+        class="font-[var(--font-display)] text-[1.18rem] font-semibold tracking-tight"
+      >树影</span>
+      <span class="eyebrow !text-[0.6rem] !tracking-[0.28em] opacity-70" style={`color:${main}`}>SHUYING</span>
+    </span>
+  )}
+</span>

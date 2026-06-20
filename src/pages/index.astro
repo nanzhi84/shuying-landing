@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Pipeline from "../components/Pipeline.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CapabilityCard from "../components/CapabilityCard.astro";
+import DemoCard from "../components/DemoCard.astro";
+import { url } from "../lib/url";
+import { hero, manifesto, capabilities, loop, demos, stats, site } from "../lib/site";
+
+const stack = ["Python", "FastAPI", "Temporal", "PostgreSQL", "React"];
+---
+
+<BaseLayout>
+  <!-- HERO：影（暗场）+ 光（流水线光迹） -->
+  <section class="canopy-light text-[var(--color-paper)]">
+    <div class="u-container grid items-center gap-14 py-20 md:py-28 lg:grid-cols-[1.04fr_0.96fr]">
+      <div>
+        <p class="eyebrow eyebrow--onink reveal">{hero.eyebrow}</p>
+        <h1 class="reveal reveal-2 mt-6 text-display-lg font-bold leading-[1.04] text-[var(--color-paper)]">
+          {hero.titleLines[0]}<br />{hero.titleLines[1]}
+        </h1>
+        <p class="reveal reveal-3 mt-7 max-w-xl text-[1.08rem] leading-relaxed text-[var(--color-mist)]">
+          {hero.lead}
+        </p>
+        <div class="reveal reveal-3 mt-9 flex flex-wrap gap-3">
+          <a href={url(hero.primaryCta.href)} class="btn btn-sun">{hero.primaryCta.label}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href={url(hero.secondaryCta.href)} class="btn btn-ghost--onink btn-ghost">{hero.secondaryCta.label}</a>
+        </div>
+        <div class="reveal reveal-4 mt-12 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[color-mix(in_oklab,var(--color-paper)_12%,transparent)] pt-6">
+          <span class="eyebrow !text-[0.62rem] !tracking-[0.18em] text-[var(--color-stone-2)]">BUILT ON</span>
+          {stack.map((s) => (
+            <span class="font-[var(--font-mono)] text-[0.78rem] text-[var(--color-mist)]">{s}</span>
+          ))}
+        </div>
+      </div>
+
+      <div class="reveal reveal-2 rounded-3xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[color-mix(in_oklab,#000_22%,transparent)] p-6 md:p-8">
+        <div class="mb-6 flex items-center justify-between">
+          <span class="eyebrow eyebrow--onink">DIGITAL-HUMAN PIPELINE</span>
+          <span class="font-[var(--font-mono)] text-[0.68rem] text-[var(--color-mist)]">workflow.run()</span>
+        </div>
+        <Pipeline />
+      </div>
+    </div>
+  </section>
+
+  <!-- 我们是谁 -->
+  <section class="u-container py-24 md:py-28">
+    <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+      <div data-reveal>
+        <p class="eyebrow mb-4">{manifesto.eyebrow}</p>
+        <h2 class="text-display-sm font-semibold text-[var(--color-ink)]">{manifesto.title}</h2>
+      </div>
+      <div data-reveal data-reveal-delay="80">
+        {manifesto.paragraphs.map((p) => (
+          <p class="mb-5 text-[1.08rem] leading-relaxed text-[var(--color-stone)]">{p}</p>
+        ))}
+        <p class="mt-7 font-[var(--font-display)] text-[1.15rem] font-medium text-[var(--color-pine)]">{manifesto.signature}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 产品能力 -->
+  <section class="border-y border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
+    <div class="u-container py-24 md:py-28">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          eyebrow="WHAT CUTAGENT DOES"
+          title="六个能力域，一条流水线。"
+          lead="从 Case 边界到多平台发布，每一域都落到可校验的强契约接口上。"
+          class="max-w-2xl"
+        />
+        <a href={url("/product")} class="btn btn-ghost shrink-0">展开全部能力
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {capabilities.map((cap) => <CapabilityCard cap={cap} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Case 自进化闭环 -->
+  <section class="u-container py-24 md:py-28">
+    <SectionHeading eyebrow={loop.eyebrow} title={loop.title} lead={loop.lead} align="center" class="mb-16" />
+    <ol class="grid gap-4 md:grid-cols-5">
+      {loop.steps.map((s, i) => (
+        <li class="relative flex flex-col rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-6" data-reveal data-reveal-delay={i * 70}>
+          <span class="font-[var(--font-display)] text-[1.6rem] font-semibold text-[var(--color-sun)]">{s.n}</span>
+          <h3 class="mt-3 text-[1.02rem] font-semibold text-[var(--color-ink)]">{s.title}</h3>
+          <p class="mt-2 text-[0.85rem] leading-relaxed text-[var(--color-stone)]">{s.desc}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="mt-8 text-center font-[var(--font-mono)] text-[0.74rem] tracking-wide text-[var(--color-stone-2)]">
+      盲预测 → 奖励信号 → 评分卡校准 → 升版人工确认 —— 越产越准
+    </p>
+  </section>
+
+  <!-- Demo -->
+  <section class="canopy-light text-[var(--color-paper)]">
+    <div class="u-container py-24 md:py-28">
+      <SectionHeading
+        eyebrow="SEE IT IN MOTION"
+        title="成片，会说话。"
+        lead="以下为 demo 占位 —— 上线后将替换为真实端到端成片。"
+        tone="paper"
+        class="mb-14 max-w-2xl"
+      />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {demos.map((demo) => <DemoCard demo={demo} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 工程化数据 -->
+  <section class="u-container py-24 md:py-28">
+    <div class="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+      {stats.map((s, i) => (
+        <div class="border-t-2 border-[var(--color-pine)] pt-5" data-reveal data-reveal-delay={i * 80}>
+          <p class="font-[var(--font-display)] text-[3rem] font-bold leading-none text-[var(--color-ink)]">{s.value}</p>
+          <p class="mt-3 text-[0.98rem] font-semibold text-[var(--color-ink)]">{s.label}</p>
+          <p class="mt-1.5 font-[var(--font-mono)] text-[0.72rem] leading-relaxed text-[var(--color-stone)]">{s.sub}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="u-container pb-8">
+    <div class="overflow-hidden rounded-3xl bg-[var(--color-ink)] px-8 py-16 text-center md:px-16 md:py-20">
+      <p class="eyebrow eyebrow--onink">LET'S BUILD THE FACTORY</p>
+      <h2 class="mx-auto mt-5 max-w-2xl text-display-sm font-semibold text-[var(--color-paper)]">
+        想看 {site.product} 跑通你的内容流水线？
+      </h2>
+      <p class="mx-auto mt-5 max-w-xl text-[1.02rem] leading-relaxed text-[var(--color-mist)]">
+        无论你是寻求规模化内容产能的品牌方，还是关注 AI 内容基础设施的投资人，我们都想和你聊聊。
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={url("/contact")} class="btn btn-sun">预约一次演示</a>
+        <a href={url("/about")} class="btn btn-ghost btn-ghost--onink">了解树影</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

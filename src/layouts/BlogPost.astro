@@ -1,0 +1,71 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { url, asset } from "../lib/url";
+import { formatDate } from "../lib/date";
+import "../styles/prose.css";
+
+interface Props {
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    author: string;
+    tags: string[];
+    cover?: string;
+    coverAlt?: string;
+    readingTime?: string;
+  };
+}
+const { data } = Astro.props;
+---
+
+<BaseLayout title={data.title} description={data.description} ogImage={data.cover}>
+  <article>
+    <!-- 文章头 -->
+    <header class="u-container max-w-3xl pt-16 md:pt-24">
+      <a href={url("/blog")} class="inline-flex items-center gap-1.5 font-[var(--font-mono)] text-[0.78rem] text-[var(--color-stone)] transition-colors hover:text-[var(--color-pine)]">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        所有文章
+      </a>
+
+      <div class="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 font-[var(--font-mono)] text-[0.74rem] tracking-wide text-[var(--color-stone-2)]">
+        <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time>
+        {data.readingTime && <span>· {data.readingTime}</span>}
+        {data.tags.map((t) => <span class="text-[var(--color-pine)]">#{t}</span>)}
+      </div>
+
+      <h1 class="mt-4 text-[2.1rem] font-bold leading-[1.12] text-[var(--color-ink)] md:text-[2.7rem]">{data.title}</h1>
+      <p class="mt-5 text-[1.12rem] leading-relaxed text-[var(--color-stone)]">{data.description}</p>
+
+      <div class="mt-7 flex items-center gap-3 border-t border-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] pt-6">
+        <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] font-[var(--font-display)] text-[0.8rem] font-semibold text-[var(--color-paper)]">树</span>
+        <span class="text-[0.9rem] text-[var(--color-stone)]">{data.author}</span>
+      </div>
+    </header>
+
+    {data.cover && (
+      <div class="u-container mt-10 max-w-4xl">
+        <img src={asset(data.cover)} alt={data.coverAlt || data.title} class="w-full rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)]" />
+      </div>
+    )}
+
+    <!-- 正文 -->
+    <div class="u-container mt-12 max-w-3xl pb-12">
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+
+    <!-- 文末 -->
+    <div class="u-container max-w-3xl">
+      <div class="flex flex-col gap-4 rounded-2xl bg-[var(--color-ink)] p-8 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <div>
+          <p class="font-[var(--font-display)] text-[1.15rem] font-semibold text-[var(--color-paper)]">想让这套流水线为你所用？</p>
+          <p class="mt-1 text-[0.9rem] text-[var(--color-mist)]">预约一次 Cutagent 演示。</p>
+        </div>
+        <a href={url("/contact")} class="btn btn-sun shrink-0 justify-center">联系我们</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

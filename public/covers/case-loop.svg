@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="'Space Grotesk','PingFang SC',sans-serif">
+  <defs>
+    <radialGradient id="cg" cx="15%" cy="-10%" r="80%">
+      <stop offset="0%" stop-color="#54b083" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#54b083" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="600" fill="#14241c"/>
+  <rect width="1200" height="600" fill="url(#cg)"/>
+  <!-- flywheel -->
+  <g transform="translate(870,300)">
+    <circle r="170" fill="none" stroke="#2f6b4f" stroke-width="2" opacity="0.5"/>
+    <circle r="170" fill="none" stroke="#d9a441" stroke-width="3" stroke-dasharray="200 870" stroke-linecap="round"/>
+    <g font-family="'IBM Plex Mono',monospace" font-size="22" fill="#f6f7f4" text-anchor="middle">
+      <g><circle cx="0" cy="-170" r="9" fill="#d9a441"/><text x="0" y="-200">①</text></g>
+      <g><circle cx="162" cy="-53" r="9" fill="#54b083"/><text x="205" y="-46">②</text></g>
+      <g><circle cx="100" cy="138" r="9" fill="#54b083"/><text x="128" y="178">③</text></g>
+      <g><circle cx="-100" cy="138" r="9" fill="#54b083"/><text x="-128" y="178">④</text></g>
+      <g><circle cx="-162" cy="-53" r="9" fill="#54b083"/><text x="-205" y="-46">⑤</text></g>
+    </g>
+    <text y="8" text-anchor="middle" fill="#a7b8ac" font-family="'IBM Plex Mono',monospace" font-size="18">CASE</text>
+  </g>
+  <text x="110" y="210" fill="#a7b8ac" font-size="22" letter-spacing="3" font-family="'IBM Plex Mono',monospace">// CASE LOOP</text>
+  <text x="110" y="270" fill="#f6f7f4" font-size="48" font-weight="600">会自进化的</text>
+  <text x="110" y="332" fill="#f6f7f4" font-size="48" font-weight="600">内容飞轮</text>
+</svg>

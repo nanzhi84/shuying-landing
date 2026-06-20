@@ -1,0 +1,27 @@
+---
+/**
+ * 博客提示框。用法：<Callout type="note" title="标题"> 内容 </Callout>
+ */
+interface Props {
+  type?: "note" | "tip" | "warn";
+  title?: string;
+}
+const { type = "note", title } = Astro.props;
+const styles = {
+  note: { bar: "var(--color-pine)", label: "NOTE", glyph: "✺" },
+  tip: { bar: "var(--color-sun)", label: "TIP", glyph: "✦" },
+  warn: { bar: "#c2683a", label: "注意", glyph: "△" },
+}[type];
+---
+
+<aside
+  class="not-prose my-7 rounded-xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_60%,var(--color-card))] p-5"
+  style={`border-left:3px solid ${styles.bar}`}
+>
+  <p class="mb-2 flex items-center gap-2 font-[var(--font-mono)] text-[0.72rem] font-medium tracking-[0.14em]" style={`color:${styles.bar}`}>
+    <span>{styles.glyph}</span>{title || styles.label}
+  </p>
+  <div class="text-[0.95rem] leading-relaxed text-[var(--color-stone)]">
+    <slot />
+  </div>
+</aside>

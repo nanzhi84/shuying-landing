@@ -1,0 +1,56 @@
+---
+import { url, asset } from "../lib/url";
+import { formatDate } from "../lib/date";
+
+interface Props {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    tags: string[];
+    cover?: string;
+    coverAlt?: string;
+    readingTime?: string;
+  };
+  featured?: boolean;
+}
+const { id, data, featured = false } = Astro.props;
+const href = url(`/blog/${id}`);
+---
+
+<article class:list={["group", featured && "md:col-span-2"]} data-reveal>
+  <a href={href} class="flex h-full flex-col overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] transition-all duration-500 hover:-translate-y-1 hover:border-[color-mix(in_oklab,var(--color-pine)_40%,transparent)] hover:shadow-[0_24px_60px_-44px_rgba(20,36,28,0.6)]">
+    <div class:list={["relative overflow-hidden", featured ? "aspect-[2.4/1]" : "aspect-[16/10]"]}>
+      {data.cover ? (
+        <img src={asset(data.cover)} alt={data.coverAlt || data.title} loading="lazy" decoding="async"
+             class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+      ) : (
+        <div class="canopy-light flex h-full w-full items-end p-5">
+          <span class="font-[var(--font-mono)] text-[0.66rem] tracking-wider text-[var(--color-mist)]">// {(data.tags[0] || "ARTICLE").toUpperCase()}</span>
+        </div>
+      )}
+    </div>
+
+    <div class:list={["flex flex-1 flex-col p-6", featured && "md:p-8"]}>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-[var(--font-mono)] text-[0.7rem] tracking-wide text-[var(--color-stone-2)]">
+        <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time>
+        {data.tags.slice(0, 2).map((t) => (
+          <span class="text-[var(--color-pine)]">#{t}</span>
+        ))}
+        {data.readingTime && <span>· {data.readingTime}</span>}
+      </div>
+
+      <h3 class:list={["mt-3 font-semibold text-[var(--color-ink)]", featured ? "text-[1.6rem] leading-snug" : "text-[1.22rem] leading-snug"]}>
+        {data.title}
+      </h3>
+      <p class:list={["mt-2.5 flex-1 leading-relaxed text-[var(--color-stone)]", featured ? "text-[1rem]" : "text-[0.92rem]"]}>
+        {data.description}
+      </p>
+      <span class="mt-5 inline-flex items-center gap-1.5 text-[0.85rem] font-medium text-[var(--color-pine)]">
+        阅读全文
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="transition-transform group-hover:translate-x-1" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+  </a>
+</article>

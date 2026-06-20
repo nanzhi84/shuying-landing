@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import { url } from "../lib/url";
+import { values, site } from "../lib/site";
+
+const whyNow = [
+  { k: "需求侧", t: "内容即获客", d: "短视频成为 B 端获客的主战场，但优质内容产能始终是稀缺资源 —— 人贵、慢、不稳定。" },
+  { k: "技术侧", t: "模型够强了", d: "TTS、口型同步、VLM 标注、LLM 编排已逼近可用拐点，缺的不是模型，而是把它们工程化的流水线。" },
+  { k: "卡位", t: "基础设施窗口", d: "谁先把「可信量产」做成基础设施，谁就定义这个品类。我们选择从最难的工程约束切入。" },
+];
+---
+
+<BaseLayout title="关于我们" description={`关于树影 —— 我们把 AI 内容生产重写成一门工程。${site.tagline}。`}>
+  <!-- 头部 -->
+  <section class="canopy-light text-[var(--color-paper)]">
+    <div class="u-container py-20 md:py-28">
+      <p class="eyebrow eyebrow--onink reveal">ABOUT {site.nameEN.toUpperCase()}</p>
+      <h1 class="reveal reveal-2 mt-6 max-w-4xl text-display font-bold leading-[1.06] text-[var(--color-paper)]">
+        让每一个品牌，都拥有一座永不疲倦的数字内容工厂。
+      </h1>
+      <p class="reveal reveal-3 mt-7 max-w-2xl text-[1.1rem] leading-relaxed text-[var(--color-mist)]">
+        树影是一家把生成式 AI 内容生产工程化的公司。我们相信，下一代内容竞争的胜负手，不在于谁能做出最惊艳的一条 demo，而在于谁能稳定、合规、可审计地做出第一万条。
+      </p>
+    </div>
+  </section>
+
+  <!-- 使命展开 -->
+  <section class="u-container py-24 md:py-28">
+    <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+      <SectionHeading eyebrow="OUR MISSION" title="把内容产能，变成可调度的基础设施。" />
+      <div>
+        <p class="mb-5 text-[1.08rem] leading-relaxed text-[var(--color-stone)]">
+          算力可以买，模型可以调，但「成规模地、对品牌负责地产出内容」这件事，至今没有一套可信的工业方案。市面上不缺生成工具，缺的是把生成、编排、质检、发布、回流、进化串成一条流水线，并对每一步负责的系统。
+        </p>
+        <p class="mb-5 text-[1.08rem] leading-relaxed text-[var(--color-stone)]">
+          这正是 {site.product} 在做的事 —— 以 Case 为长期学习边界，把内容生产拆成 16 个只做一件事的节点，用强契约、确定性与可观测把它们焊死成一条可审计的生产线。
+        </p>
+        <p class="mt-7 font-[var(--font-display)] text-[1.2rem] font-medium text-[var(--color-pine)]">
+          我们不做更炫的玩具，我们做内容工业的水电煤。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 价值观 -->
+  <section class="border-y border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
+    <div class="u-container py-24 md:py-28">
+      <SectionHeading eyebrow="WHAT WE BELIEVE" title="四条不妥协的原则。" class="mb-14 max-w-2xl" />
+      <div class="grid gap-5 sm:grid-cols-2">
+        {values.map((v, i) => (
+          <div class="flex gap-5 rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal data-reveal-delay={i * 70}>
+            <span class="font-[var(--font-mono)] text-[1.05rem] font-medium text-[var(--color-sun)]">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 class="text-[1.15rem] font-semibold text-[var(--color-ink)]">{v.title}</h3>
+              <p class="mt-2.5 text-[0.95rem] leading-relaxed text-[var(--color-stone)]">{v.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why now -->
+  <section class="u-container py-24 md:py-28">
+    <SectionHeading eyebrow="WHY NOW" title="为什么是现在。" lead="三条曲线正在交汇 —— 这是定义品类的窗口期。" class="mb-14 max-w-2xl" />
+    <div class="grid gap-px overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] md:grid-cols-3">
+      {whyNow.map((w) => (
+        <div class="bg-[var(--color-card)] p-8" data-reveal>
+          <p class="eyebrow eyebrow--dim">{w.k}</p>
+          <h3 class="mt-4 text-[1.2rem] font-semibold text-[var(--color-ink)]">{w.t}</h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-stone)]">{w.d}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="u-container pb-8">
+    <div class="rounded-3xl bg-[var(--color-ink)] px-8 py-16 text-center md:px-16">
+      <p class="eyebrow eyebrow--onink">JOIN US</p>
+      <h2 class="mx-auto mt-5 max-w-2xl text-display-sm font-semibold text-[var(--color-paper)]">
+        和我们一起，把内容工业建起来。
+      </h2>
+      <p class="mx-auto mt-5 max-w-xl text-[1.02rem] leading-relaxed text-[var(--color-mist)]">
+        我们正在与早期品牌客户、生态伙伴与投资人对话。如果你也相信这件事，欢迎找我们。
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={url("/contact")} class="btn btn-sun">联系我们</a>
+        <a href={url("/product")} class="btn btn-ghost btn-ghost--onink">看产品</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

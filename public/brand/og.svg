@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" font-family="'Space Grotesk','PingFang SC',sans-serif">
+  <defs>
+    <radialGradient id="g1" cx="80%" cy="-5%" r="70%">
+      <stop offset="0%" stop-color="#d9a441" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#d9a441" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="5%" cy="8%" r="60%">
+      <stop offset="0%" stop-color="#54b083" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#54b083" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#14241c"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+
+  <!-- mark -->
+  <g transform="translate(90,90)">
+    <path d="M44 8 L62 30 H26 Z" fill="#d9a441"/>
+    <path d="M44 26 L67 56 H21 Z" fill="#54b083"/>
+    <path d="M44 44 L74 76 H14 Z" fill="#f6f7f4"/>
+    <rect x="40" y="73" width="8" height="7" rx="1" fill="#f6f7f4"/>
+  </g>
+  <text x="186" y="150" fill="#f6f7f4" font-size="40" font-weight="600">树影 Shuying</text>
+
+  <text x="90" y="340" fill="#f6f7f4" font-size="74" font-weight="700">让内容生产，</text>
+  <text x="90" y="430" fill="#f6f7f4" font-size="74" font-weight="700">像精密制造一样可信。</text>
+
+  <text x="90" y="510" fill="#a7b8ac" font-size="28" font-family="'IBM Plex Mono',monospace" letter-spacing="2">CASE-FIRST DIGITAL-HUMAN CONTENT FACTORY · CUTAGENT</text>
+
+  <!-- pipeline hint -->
+  <g transform="translate(90,556)">
+    <rect x="0" y="0" width="1020" height="2" fill="#2f6b4f" opacity="0.5"/>
+    <g fill="#d9a441">
+      <circle cx="40" cy="1" r="5"/><circle cx="240" cy="1" r="5"/><circle cx="440" cy="1" r="5"/>
+      <circle cx="640" cy="1" r="5"/><circle cx="840" cy="1" r="5"/><circle cx="1010" cy="1" r="5"/>
+    </g>
+  </g>
+</svg>

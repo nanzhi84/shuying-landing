@@ -1,0 +1,119 @@
+/* 博客正文排版 —— 手工打磨，贴合「林墨」品牌，而非通用 typography 插件默认样式 */
+.prose {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.78;
+  color: color-mix(in oklab, var(--color-ink) 92%, transparent);
+}
+
+.prose > * + * { margin-top: 1.45rem; }
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  scroll-margin-top: 6rem;
+}
+.prose h2 {
+  font-size: 1.7rem;
+  margin-top: 3.2rem;
+  padding-top: 2rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+}
+.prose h3 { font-size: 1.32rem; margin-top: 2.4rem; }
+.prose h4 { font-size: 1.08rem; margin-top: 2rem; }
+
+.prose p { text-wrap: pretty; }
+
+.prose a {
+  color: var(--color-pine-700);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--color-pine) 35%, transparent);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s;
+}
+.prose a:hover { text-decoration-color: var(--color-pine); }
+
+.prose strong { font-weight: 600; color: var(--color-ink); }
+
+.prose ul,
+.prose ol { padding-left: 1.4rem; }
+.prose li { margin-top: 0.5rem; padding-left: 0.3rem; }
+.prose ul > li::marker { color: var(--color-pine); }
+.prose ol > li::marker { color: var(--color-stone-2); font-family: var(--font-mono); font-size: 0.9em; }
+
+.prose blockquote {
+  margin-inline: 0;
+  padding: 0.4rem 0 0.4rem 1.4rem;
+  border-left: 2px solid var(--color-sun);
+  color: var(--color-stone);
+  font-style: normal;
+}
+.prose blockquote p { margin-top: 0.6rem; }
+.prose blockquote p:first-child { margin-top: 0; }
+
+.prose hr {
+  border: 0;
+  margin-block: 2.8rem;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-ink) 22%, transparent) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  color: var(--color-pine-700);
+}
+
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  padding: 1.15rem 1.3rem;
+  border-radius: 14px;
+  overflow-x: auto;
+  border: 1px solid color-mix(in oklab, #000 35%, transparent);
+  box-shadow: 0 14px 40px -24px rgba(14, 24, 19, 0.6);
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+}
+.prose th {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-stone);
+  font-weight: 500;
+}
+
+.prose img { border-radius: 14px; }
+
+.prose :where(h2, h3, h4) + * { margin-top: 1rem; }

@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Pipeline from "../components/Pipeline.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CapabilityCard from "../components/CapabilityCard.astro";
+import { url } from "../lib/url";
+import { capabilities, site } from "../lib/site";
+
+const techStack = [
+  { layer: "语言 / API", value: "Python 3.12 · FastAPI · Pydantic v2 · Uvicorn" },
+  { layer: "数据", value: "PostgreSQL 16 + pgvector · SQLAlchemy 2 · Alembic" },
+  { layer: "编排", value: "Temporal · 独立 worker 消费生产队列" },
+  { layer: "对象存储", value: "S3 兼容分层存储 · MinIO / S3 / OSS" },
+  { layer: "媒体 / AI", value: "ffmpeg · PySceneDetect · Silero VAD · jieba" },
+  { layer: "Providers", value: "MiniMax · DashScope · RunningHub HeyGem · OpenAI" },
+  { layer: "前端", value: "React 18 · Vite · TypeScript · TanStack Query" },
+  { layer: "观测", value: "Prometheus /metrics · 结构化审计日志" },
+];
+
+const principles = [
+  { tag: "可降级但显式上报", title: "宁可标注，不可假装", desc: "B-roll 不足、AI 封面失败、音色缺失等可软跳过，但每一次降级都进运行报告，分级可见。" },
+  { tag: "不允许静默降级", title: "宁可报错，不可糊弄", desc: "强制对齐失败、provider 缺失、契约不符 —— 直接显式报错，绝不偷偷给次品成片。" },
+  { tag: "确定性素材选择", title: "可复现，不靠运气", desc: "素材选择按 ledger 近期降权，确定性而非随机，规模化也不雷同、可追溯。" },
+];
+---
+
+<BaseLayout title="产品" description={`${site.product} 产品能力 —— Case 工作台、16 节点流水线、媒体内核、口型同步、多平台发布与 Provider 网关。`}>
+  <!-- 头部 -->
+  <section class="u-container pb-4 pt-20 md:pt-28">
+    <p class="eyebrow mb-4">THE PRODUCT</p>
+    <h1 class="max-w-4xl text-display font-bold leading-[1.06] text-[var(--color-ink)]">
+      一套把脚本变成成片的<br class="hidden md:block" />工业级内容流水线。
+    </h1>
+    <p class="mt-7 max-w-2xl text-[1.1rem] leading-relaxed text-[var(--color-stone)]">
+      {site.product} 不是一个「能生成视频的模型」，而是一条端到端、可审计、可规模化的生产线。下面是它的全部骨架。
+    </p>
+  </section>
+
+  <!-- 完整流水线 -->
+  <section class="u-container py-16">
+    <div class="canopy-light rounded-3xl border border-[color-mix(in_oklab,var(--color-ink)_30%,transparent)] px-6 py-12 text-[var(--color-paper)] md:px-12">
+      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <p class="eyebrow eyebrow--onink mb-4">THE 16 NODES</p>
+          <h2 class="text-display-sm font-semibold text-[var(--color-paper)]">每个节点，只做一件事。</h2>
+          <p class="mt-5 max-w-md text-[1.02rem] leading-relaxed text-[var(--color-mist)]">
+            一个 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">DigitalHumanVideo</code> Job 触发一次 <code class="font-[var(--font-mono)] text-[var(--color-sun)]">WorkflowRun</code>，按固定节点序执行。每个节点输入哈希可复用、可 resume、可 retry，产出带类型 artifacts 与运行报告。
+          </p>
+          <ul class="mt-7 space-y-3 text-[0.92rem] text-[var(--color-mist)]">
+            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>Temporal 编排，独立 worker 消费 <span class="font-[var(--font-mono)]">cutagent-production</span> 队列</li>
+            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>canonical input hash 驱动复用，避免重复算力</li>
+            <li class="flex gap-3"><span class="font-[var(--font-mono)] text-[var(--color-sun)]">→</span>WebSocket <span class="font-[var(--font-mono)]">/ws/runs/&#123;id&#125;</span> 实时进度</li>
+          </ul>
+        </div>
+        <Pipeline />
+      </div>
+    </div>
+  </section>
+
+  <!-- 全部能力 -->
+  <section class="u-container py-20 md:py-24">
+    <SectionHeading eyebrow="CAPABILITIES" title="六个能力域，逐一拆解。" class="mb-12 max-w-2xl" />
+    <div class="grid gap-5 md:grid-cols-2">
+      {capabilities.map((cap) => <CapabilityCard cap={cap} />)}
+    </div>
+  </section>
+
+  <!-- 降级哲学 -->
+  <section class="border-y border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
+    <div class="u-container py-20 md:py-24">
+      <SectionHeading
+        eyebrow="WHY IT'S TRUSTWORTHY"
+        title="质量，永远可被追问。"
+        lead="可信的量产，来自对「失败」的诚实。我们把降级当成一等公民来设计。"
+        class="mb-12 max-w-2xl"
+      />
+      <div class="grid gap-5 md:grid-cols-3">
+        {principles.map((p) => (
+          <div class="rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal>
+            <p class="eyebrow eyebrow--dim !tracking-[0.12em]">{p.tag}</p>
+            <h3 class="mt-4 text-[1.15rem] font-semibold text-[var(--color-ink)]">{p.title}</h3>
+            <p class="mt-3 text-[0.92rem] leading-relaxed text-[var(--color-stone)]">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 技术栈 -->
+  <section class="u-container py-20 md:py-24">
+    <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <SectionHeading
+        eyebrow="UNDER THE HOOD"
+        title="Contract-first，可插拔。"
+        lead="FastAPI 即 OpenAPI 唯一事实源，前端类型自动生成；存储、运行时、对象存储与 provider 全部可插拔。"
+      />
+      <dl class="divide-y divide-[color-mix(in_oklab,var(--color-ink)_9%,transparent)]">
+        {techStack.map((row) => (
+          <div class="grid grid-cols-[8rem_1fr] gap-4 py-4 md:grid-cols-[10rem_1fr]" data-reveal>
+            <dt class="font-[var(--font-mono)] text-[0.78rem] uppercase tracking-wider text-[var(--color-pine)]">{row.layer}</dt>
+            <dd class="text-[0.95rem] text-[var(--color-stone)]">{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="u-container pb-8">
+    <div class="rounded-3xl bg-[var(--color-ink)] px-8 py-14 text-center md:px-16">
+      <h2 class="mx-auto max-w-2xl text-display-sm font-semibold text-[var(--color-paper)]">让流水线为你的品牌跑起来。</h2>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href={url("/contact")} class="btn btn-sun">预约演示</a>
+        <a href={url("/blog")} class="btn btn-ghost btn-ghost--onink">读技术博客</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

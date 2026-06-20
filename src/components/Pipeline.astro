@@ -1,0 +1,190 @@
+---
+import { pipeline } from "../lib/site";
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+
+// 给每个节点一个全局顺序号，用于光迹逐节点扫过的 stagger
+let order = 0;
+const phases = pipeline.map((p) => ({
+  ...p,
+  nodes: p.nodes.map((n) => ({ ...n, order: order++ })),
+}));
+const total = order;
+---
+
+<div class={`pipeline ${compact ? "pipeline--compact" : ""}`} data-total={total}>
+  <div class="pipeline__spine" aria-hidden="true"></div>
+
+  {phases.map((p, i) => (
+    <div class="pipeline__phase">
+      <div class="pipeline__phaseHead">
+        <span class="pipeline__phaseDot" style={`--d:${i * 0.5}s`}></span>
+        <span class="pipeline__phaseIdx">{String(i + 1).padStart(2, "0")}</span>
+        <span class="pipeline__phaseName">{p.phase}</span>
+      </div>
+      <div class="pipeline__nodes">
+        {p.nodes.map((n) => (
+          <div class="node" style={`--order:${n.order}`}>
+            <span class="node__n">{n.n}</span>
+            <span class="node__body">
+              <span class="node__label">{n.label}</span>
+              <span class="node__en">{n.en}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <p class="pipeline__caption">
+    一个 Job → 一次 WorkflowRun → {total} 节点 → 带类型 artifacts · 运行报告 · 分级降级
+  </p>
+</div>
+
+<style>
+  .pipeline {
+    position: relative;
+    padding-left: 1.75rem;
+  }
+  /* 左脊：把 4 个阶段串成一条流水线，并承载向下流动的光迹 */
+  .pipeline__spine {
+    position: absolute;
+    left: 0.45rem;
+    top: 0.4rem;
+    bottom: 3.2rem;
+    width: 2px;
+    background: color-mix(in oklab, var(--color-paper) 16%, transparent);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .pipeline__spine::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    width: 4px;
+    height: 28%;
+    border-radius: 4px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-sun),
+      var(--color-sun-bright),
+      transparent
+    );
+    filter: blur(0.5px);
+    box-shadow: 0 0 14px 2px color-mix(in oklab, var(--color-sun) 60%, transparent);
+    animation: trace 3.4s var(--ease-out-expo) 0.2s 1 both;
+  }
+  @keyframes trace {
+    from { top: -30%; }
+    to { top: 110%; }
+  }
+
+  .pipeline__phase { margin-bottom: 1.6rem; }
+  .pipeline__phase:last-of-type { margin-bottom: 1.2rem; }
+
+  .pipeline__phaseHead {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+  .pipeline__phaseDot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--color-ink);
+    border: 2px solid var(--color-sun);
+    box-shadow: 0 0 10px -1px color-mix(in oklab, var(--color-sun) 55%, transparent);
+    flex-shrink: 0;
+  }
+  .pipeline__phaseIdx {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--color-sun);
+  }
+  .pipeline__phaseName {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-paper);
+    letter-spacing: 0.02em;
+  }
+
+  .pipeline__nodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .node {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 0.8rem 0.5rem 0.6rem;
+    border-radius: 11px;
+    background: color-mix(in oklab, var(--color-paper) 5%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-paper) 11%, transparent);
+    transition: transform 0.4s var(--ease-out-expo), border-color 0.3s, background-color 0.3s;
+    animation: nodeGlow 0.75s ease-out both;
+    animation-delay: calc(var(--order) * 0.16s + 0.45s);
+  }
+  .node:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--color-pine-bright) 55%, transparent);
+    background: color-mix(in oklab, var(--color-paper) 8%, transparent);
+  }
+  .node__n {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--color-sun);
+    background: color-mix(in oklab, var(--color-sun) 14%, transparent);
+    border-radius: 6px;
+    padding: 0.15rem 0.35rem;
+    line-height: 1;
+  }
+  .node__body { display: flex; flex-direction: column; line-height: 1.15; }
+  .node__label {
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--color-paper);
+  }
+  .node__en {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.04em;
+    color: var(--color-mist);
+  }
+
+  @keyframes nodeGlow {
+    0% { opacity: 0.35; transform: translateY(6px); }
+    40% {
+      opacity: 1;
+      border-color: color-mix(in oklab, var(--color-sun) 70%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-sun) 30%, transparent),
+        0 0 22px -2px color-mix(in oklab, var(--color-sun) 55%, transparent);
+    }
+    100% { opacity: 1; transform: none; box-shadow: none; }
+  }
+
+  .pipeline__caption {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--color-mist);
+    line-height: 1.6;
+  }
+
+  .pipeline--compact .node__en { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .node { animation: none; opacity: 1; }
+    .pipeline__spine::after { animation: none; opacity: 0.5; top: 0; height: 100%; }
+  }
+</style>

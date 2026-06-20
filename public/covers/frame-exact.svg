@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="'IBM Plex Mono',monospace">
+  <defs>
+    <radialGradient id="fg" cx="85%" cy="-10%" r="75%">
+      <stop offset="0%" stop-color="#d9a441" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#d9a441" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="600" fill="#14241c"/>
+  <rect width="1200" height="600" fill="url(#fg)"/>
+  <!-- timeline -->
+  <g transform="translate(120,300)">
+    <line x1="0" y1="0" x2="960" y2="0" stroke="#2f6b4f" stroke-width="2" opacity="0.6"/>
+    <g stroke="#5c6b5e">
+      <!-- second ticks -->
+      <line x1="0" y1="-14" x2="0" y2="14"/><line x1="120" y1="-14" x2="120" y2="14"/>
+      <line x1="240" y1="-14" x2="240" y2="14"/><line x1="360" y1="-14" x2="360" y2="14"/>
+      <line x1="480" y1="-14" x2="480" y2="14"/><line x1="600" y1="-14" x2="600" y2="14"/>
+      <line x1="720" y1="-14" x2="720" y2="14"/><line x1="840" y1="-14" x2="840" y2="14"/>
+      <line x1="960" y1="-14" x2="960" y2="14"/>
+    </g>
+    <!-- frame ticks (fine) -->
+    <g stroke="#76847a" stroke-width="1" opacity="0.55">
+      <line x1="40" y1="-7" x2="40" y2="7"/><line x1="80" y1="-7" x2="80" y2="7"/>
+      <line x1="160" y1="-7" x2="160" y2="7"/><line x1="200" y1="-7" x2="200" y2="7"/>
+      <line x1="280" y1="-7" x2="280" y2="7"/><line x1="320" y1="-7" x2="320" y2="7"/>
+      <line x1="400" y1="-7" x2="400" y2="7"/><line x1="440" y1="-7" x2="440" y2="7"/>
+    </g>
+    <!-- the exact cut frame -->
+    <line x1="480" y1="-46" x2="480" y2="46" stroke="#d9a441" stroke-width="3"/>
+    <circle cx="480" cy="0" r="7" fill="#d9a441"/>
+    <text x="496" y="-54" fill="#f0c45e" font-size="20">cut @ frame 312</text>
+  </g>
+  <text x="120" y="150" fill="#a7b8ac" font-size="22" letter-spacing="3">// RENDERING</text>
+  <text x="120" y="210" fill="#f6f7f4" font-size="48" font-weight="600" font-family="'Space Grotesk','PingFang SC',sans-serif">帧级精确，消灭切镜闪帧</text>
+</svg>

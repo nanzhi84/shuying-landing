@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
+import Figure from "../../components/mdx/Figure.astro";
+import Video from "../../components/mdx/Video.astro";
+import Callout from "../../components/mdx/Callout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPost data={post.data}>
+  <!-- 自定义组件无需在 MDX 内 import，作者直接写 <Figure/> <Video/> <Callout/> 即可 -->
+  <Content components={{ Figure, Video, Callout }} />
+</BlogPost>

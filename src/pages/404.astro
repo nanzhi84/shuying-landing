@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { url } from "../lib/url";
+---
+
+<BaseLayout title="页面走丢了" noindex>
+  <section class="canopy-light text-[var(--color-paper)]">
+    <div class="u-container flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+      <p class="font-[var(--font-mono)] text-[0.78rem] tracking-[0.2em] text-[var(--color-sun)]">ERROR · 404 · NODE_NOT_FOUND</p>
+      <h1 class="mt-6 text-display font-bold text-[var(--color-paper)]">这条链路没有产出。</h1>
+      <p class="mt-5 max-w-md text-[1.05rem] leading-relaxed text-[var(--color-mist)]">
+        你访问的节点不存在或已被移除。回到主流水线吧。
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={url("/")} class="btn btn-sun">回到首页</a>
+        <a href={url("/blog")} class="btn btn-ghost btn-ghost--onink">逛逛博客</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* 自托管字体（仅 Latin，CJK 走系统高质量字栈，保证静态站点零外部请求 + 加载快） */
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+/* ── 设计 token：林墨 × 斑驳日光 ─────────────────────────────── */
+@theme {
+  /* 影：深林墨色 */
+  --color-ink: #14241c;
+  --color-ink-700: #1b2e24;
+  --color-ink-800: #142019;
+  --color-ink-900: #0e1813;
+
+  /* 纸：沙纸白 */
+  --color-paper: #f6f7f4;
+  --color-paper-2: #eef0ea;
+  --color-card: #ffffff;
+
+  /* 松绿：主色 */
+  --color-pine: #2f6b4f;
+  --color-pine-700: #245540;
+  --color-pine-bright: #54b083;
+
+  /* 光：斑驳日光琥珀 */
+  --color-sun: #d9a441;
+  --color-sun-bright: #f0c45e;
+
+  /* 雾岩：中性 */
+  --color-stone: #5c6b5e;
+  --color-stone-2: #76847a;
+  --color-mist: #a7b8ac;
+
+  /* 字体 */
+  --font-display: "Space Grotesk", var(--font-cjk), sans-serif;
+  --font-sans: "IBM Plex Sans", var(--font-cjk), sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 字阶（流体） */
+  --text-eyebrow: 0.72rem;
+  --text-display-sm: clamp(1.85rem, 1.4rem + 1.9vw, 2.7rem);
+  --text-display: clamp(2.45rem, 1.7rem + 3.3vw, 4.4rem);
+  --text-display-lg: clamp(3rem, 1.9rem + 4.8vw, 5.8rem);
+
+  /* 缓动 */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  :root {
+    /* 高质量 CJK 字栈（系统） */
+    --font-cjk: "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
+      "Source Han Sans CN", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+
+    /* Shiki css-variables：林墨终端配色 */
+    --astro-code-foreground: #d6e2da;
+    --astro-code-background: #0e1813;
+    --astro-code-token-comment: #5f7268;
+    --astro-code-token-punctuation: #8aa094;
+    --astro-code-token-keyword: #f0c45e;
+    --astro-code-token-string: #8fd3ad;
+    --astro-code-token-string-expression: #8fd3ad;
+    --astro-code-token-constant: #e0b6f0;
+    --astro-code-token-function: #7fb8e6;
+    --astro-code-token-parameter: #d6e2da;
+    --astro-code-token-link: #54b083;
+
+    color-scheme: light;
+  }
+
+  * {
+    border-color: color-mix(in oklab, var(--color-ink) 12%, transparent);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    font-feature-settings: "ss01", "cv01", "tnum" 0;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-sun) 35%, transparent);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-pine);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* 细滚动条 */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--color-stone) 45%, transparent);
+    border-radius: 999px;
+    border: 3px solid var(--color-paper);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ── 可复用语义类 ───────────────────────────────────────────── */
+@layer components {
+  .u-container {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .u-container { padding-inline: 2.5rem; }
+  }
+
+  /* mono 眉标：所有结构化标签的统一语言 */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-pine);
+  }
+  .eyebrow--dim { color: var(--color-stone-2); }
+  .eyebrow--onink { color: var(--color-sun); }
+
+  /* 斑驳日光：暗场顶部的一束光（树影的「光」） */
+  .canopy-light {
+    position: relative;
+    background-color: var(--color-ink);
+    background-image:
+      radial-gradient(58rem 40rem at 78% -8%, color-mix(in oklab, var(--color-sun) 16%, transparent), transparent 60%),
+      radial-gradient(50rem 38rem at 6% 4%, color-mix(in oklab, var(--color-pine-bright) 13%, transparent), transparent 58%);
+  }
+
+  /* 主按钮 */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.72rem 1.25rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1;
+    transition: transform 0.4s var(--ease-out-expo), background-color 0.3s, color 0.3s, border-color 0.3s;
+    will-change: transform;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--color-ink); color: var(--color-paper); }
+  .btn-primary:hover { background: var(--color-pine-700); }
+  .btn-sun { background: var(--color-sun); color: var(--color-ink-900); }
+  .btn-sun:hover { background: var(--color-sun-bright); }
+  .btn-ghost {
+    border: 1px solid color-mix(in oklab, var(--color-ink) 22%, transparent);
+    color: var(--color-ink);
+  }
+  .btn-ghost:hover { background: color-mix(in oklab, var(--color-ink) 5%, transparent); }
+  .btn-ghost--onink {
+    border-color: color-mix(in oklab, var(--color-paper) 28%, transparent);
+    color: var(--color-paper);
+  }
+  .btn-ghost--onink:hover { background: color-mix(in oklab, var(--color-paper) 9%, transparent); }
+}
+
+/* ── 进入动画（被 reduced-motion 接管） ────────────────────── */
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: reveal 0.9s var(--ease-out-expo) forwards;
+  }
+  .reveal-2 { animation-delay: 0.08s; }
+  .reveal-3 { animation-delay: 0.16s; }
+  .reveal-4 { animation-delay: 0.24s; }
+  @keyframes reveal {
+    to { opacity: 1; transform: none; }
+  }
+}

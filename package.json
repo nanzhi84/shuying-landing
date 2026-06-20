@@ -1,0 +1,27 @@
+{
+  "name": "shuying-landing",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "树影 Shuying · Cutagent — 官方静态站点与技术博客",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.2.10",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.2",
+    "tailwindcss": "^4.3.1"
+  }
+}
