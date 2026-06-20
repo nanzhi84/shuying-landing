@@ -1,190 +1,147 @@
 ---
 import { pipeline } from "../lib/site";
 
-interface Props {
-  compact?: boolean;
-}
-const { compact = false } = Astro.props;
+/**
+ * 数字人流水线 · 横向泳道有向图(Swimlane DAG)。
+ * 4 阶段从左到右成 4 列泳道,节点自上而下;列间发丝贝塞尔连线为「阶段间数据流」的
+ * 示意装置(site.ts 不编码依赖边,故连线非字面依赖图)。每阶段首节点 + 其间「首→首」
+ * 连线为琥珀「关键路径」。
+ *
+ * 无障碍:节点 / 连线 / 文字默认完整可见,不依赖任何动画类;自绘仅在父级被 JS 加上
+ * .is-draw 且允许动效时叠加(见 BaseLayout)。
+ */
+const COL_W = 180;
+const COL_GAP = 110;
+const NODE_H = 42;
+const ROW_PITCH = 56;
+const TOP = 92;
+const HEAD_Y = 44;
+const PAD = 40;
 
-// 给每个节点一个全局顺序号，用于光迹逐节点扫过的 stagger
+const colX = (i: number) => PAD + i * (COL_W + COL_GAP);
+const rowTop = (r: number) => TOP + r * ROW_PITCH;
+const rowMid = (r: number) => rowTop(r) + NODE_H / 2;
+
+const maxRows = Math.max(...pipeline.map((p) => p.nodes.length));
+const VB_W = PAD * 2 + pipeline.length * COL_W + (pipeline.length - 1) * COL_GAP;
+const VB_H = rowTop(maxRows - 1) + NODE_H + 24;
+
+type Edge = { d: string; hot: boolean; col: number };
+const edges: Edge[] = [];
+for (let i = 0; i < pipeline.length - 1; i++) {
+  const fromN = pipeline[i].nodes.length;
+  const toN = pipeline[i + 1].nodes.length;
+  const x1 = colX(i) + COL_W;
+  const x2 = colX(i + 1);
+  const cx = (x1 + x2) / 2;
+  for (let r = 0; r < fromN; r++) {
+    const targets = new Set<number>([Math.min(r, toN - 1)]);
+    if (r === fromN - 1) for (let t = fromN - 1; t < toN; t++) targets.add(t);
+    for (const t of targets) {
+      edges.push({
+        d: `M${x1} ${rowMid(r)} C${cx} ${rowMid(r)} ${cx} ${rowMid(t)} ${x2} ${rowMid(t)}`,
+        hot: r === 0 && t === 0,
+        col: i,
+      });
+    }
+  }
+}
+
 let order = 0;
-const phases = pipeline.map((p) => ({
-  ...p,
-  nodes: p.nodes.map((n) => ({ ...n, order: order++ })),
+const cols = pipeline.map((p, ci) => ({
+  phase: p.phase,
+  idx: String(ci + 1).padStart(2, "0"),
+  x: colX(ci),
+  nodes: p.nodes.map((n, ri) => ({
+    n: n.n,
+    label: n.label,
+    x: colX(ci),
+    y: rowTop(ri),
+    hot: ri === 0,
+    order: order++,
+  })),
 }));
 const total = order;
 ---
 
-<div class={`pipeline ${compact ? "pipeline--compact" : ""}`} data-total={total}>
-  <div class="pipeline__spine" aria-hidden="true"></div>
-
-  {phases.map((p, i) => (
-    <div class="pipeline__phase">
-      <div class="pipeline__phaseHead">
-        <span class="pipeline__phaseDot" style={`--d:${i * 0.5}s`}></span>
-        <span class="pipeline__phaseIdx">{String(i + 1).padStart(2, "0")}</span>
-        <span class="pipeline__phaseName">{p.phase}</span>
-      </div>
-      <div class="pipeline__nodes">
-        {p.nodes.map((n) => (
-          <div class="node" style={`--order:${n.order}`}>
-            <span class="node__n">{n.n}</span>
-            <span class="node__body">
-              <span class="node__label">{n.label}</span>
-              <span class="node__en">{n.en}</span>
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  ))}
-
-  <p class="pipeline__caption">
+<figure class="pipeline" data-pipeline>
+  <div class="pipeline__scroll">
+    <svg
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
+      role="img"
+      aria-label="数字人流水线:准入、合成、编排、渲染四阶段共 16 个节点的有向流程图"
+    >
+      <line class="head-rule" x1={PAD} y1="56" x2={VB_W - PAD} y2="56"></line>
+      {cols.map((c) => (
+        <g class="phead">
+          <text class="pi" x={c.x} y={HEAD_Y}>{c.idx}</text>
+          <text class="ph" x={c.x + 22} y={HEAD_Y}>{c.phase}</text>
+        </g>
+      ))}
+      {edges.map((e) => (
+        <path class:list={["edge", { hot: e.hot }]} style={`--c:${e.col}`} d={e.d} pathLength="1"></path>
+      ))}
+      {cols.map((c) =>
+        c.nodes.map((n) => (
+          <g class:list={["node", { hot: n.hot }]} style={`--o:${n.order}`}>
+            <rect class="nrect" x={n.x} y={n.y} width={COL_W} height={NODE_H} rx="10"></rect>
+            <text class="nn" x={n.x + 14} y={n.y + 26}>{n.n}</text>
+            <text class="nl" x={n.x + 40} y={n.y + 26}>{n.label}</text>
+          </g>
+        ))
+      )}
+    </svg>
+  </div>
+  <figcaption class="pipeline__cap">
     一个 Job → 一次 WorkflowRun → {total} 节点 → 带类型 artifacts · 运行报告 · 分级降级
-  </p>
-</div>
+  </figcaption>
+</figure>
 
 <style>
-  .pipeline {
-    position: relative;
-    padding-left: 1.75rem;
+  .pipeline { margin: 0; }
+  .pipeline__scroll { overflow-x: auto; overflow-y: hidden; }
+  .pipeline svg {
+    display: block; width: 100%; height: auto; overflow: visible; min-width: 760px;
   }
-  /* 左脊：把 4 个阶段串成一条流水线，并承载向下流动的光迹 */
-  .pipeline__spine {
-    position: absolute;
-    left: 0.45rem;
-    top: 0.4rem;
-    bottom: 3.2rem;
-    width: 2px;
-    background: color-mix(in oklab, var(--color-paper) 16%, transparent);
-    overflow: hidden;
-    border-radius: 2px;
+  .head-rule { stroke: color-mix(in oklab, var(--color-paper) 10%, transparent); stroke-width: 1; }
+  .pi { font-family: var(--font-mono); font-size: 12px; fill: var(--color-sun); }
+  .ph { font-family: var(--font-display); font-weight: 600; font-size: 14px; fill: var(--color-paper); }
+  .edge { stroke: color-mix(in oklab, var(--color-paper) 16%, transparent); stroke-width: 1; fill: none; }
+  .edge.hot { stroke: var(--color-sun); stroke-width: 1.5; }
+  .nrect {
+    fill: color-mix(in oklab, var(--color-paper) 4%, transparent);
+    stroke: color-mix(in oklab, var(--color-paper) 13%, transparent);
+    stroke-width: 1;
   }
-  .pipeline__spine::after {
-    content: "";
-    position: absolute;
-    left: -1px;
-    width: 4px;
-    height: 28%;
-    border-radius: 4px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--color-sun),
-      var(--color-sun-bright),
-      transparent
-    );
-    filter: blur(0.5px);
-    box-shadow: 0 0 14px 2px color-mix(in oklab, var(--color-sun) 60%, transparent);
-    animation: trace 3.4s var(--ease-out-expo) 0.2s 1 both;
+  .node.hot .nrect {
+    stroke: color-mix(in oklab, var(--color-sun) 70%, transparent);
+    fill: color-mix(in oklab, var(--color-sun) 8%, transparent);
   }
-  @keyframes trace {
-    from { top: -30%; }
-    to { top: 110%; }
+  .nn { font-family: var(--font-mono); font-size: 11px; fill: var(--color-stone-2); }
+  .node.hot .nn { fill: var(--color-sun); }
+  .nl { font-family: var(--font-sans); font-size: 13px; fill: var(--color-paper); }
+  .pipeline__cap {
+    margin-top: 16px; font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.03em; color: var(--color-mist); line-height: 1.7;
   }
 
-  .pipeline__phase { margin-bottom: 1.6rem; }
-  .pipeline__phase:last-of-type { margin-bottom: 1.2rem; }
-
-  .pipeline__phaseHead {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.7rem;
+  /* 自绘:仅在 JS 加 .is-draw 且允许动效时叠加;默认全部可见 */
+  .pipeline.is-draw .edge {
+    stroke-dasharray: 1; stroke-dashoffset: 1;
+    animation: pl-dash 0.8s var(--ease-out-expo) forwards;
+    animation-delay: calc(var(--c, 0) * 0.18s + 0.15s);
   }
-  .pipeline__phaseDot {
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 50%;
-    background: var(--color-ink);
-    border: 2px solid var(--color-sun);
-    box-shadow: 0 0 10px -1px color-mix(in oklab, var(--color-sun) 55%, transparent);
-    flex-shrink: 0;
+  @keyframes pl-dash { to { stroke-dashoffset: 0; } }
+  .pipeline.is-draw .node {
+    opacity: 0; transform: translateY(6px); transform-box: fill-box;
+    animation: pl-node 0.55s var(--ease-out-expo) forwards;
+    animation-delay: calc(var(--o, 0) * 0.05s + 0.3s);
   }
-  .pipeline__phaseIdx {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: var(--color-sun);
-  }
-  .pipeline__phaseName {
-    font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--color-paper);
-    letter-spacing: 0.02em;
-  }
-
-  .pipeline__nodes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-  }
-
-  .node {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.5rem 0.8rem 0.5rem 0.6rem;
-    border-radius: 11px;
-    background: color-mix(in oklab, var(--color-paper) 5%, transparent);
-    border: 1px solid color-mix(in oklab, var(--color-paper) 11%, transparent);
-    transition: transform 0.4s var(--ease-out-expo), border-color 0.3s, background-color 0.3s;
-    animation: nodeGlow 0.75s ease-out both;
-    animation-delay: calc(var(--order) * 0.16s + 0.45s);
-  }
-  .node:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in oklab, var(--color-pine-bright) 55%, transparent);
-    background: color-mix(in oklab, var(--color-paper) 8%, transparent);
-  }
-  .node__n {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--color-sun);
-    background: color-mix(in oklab, var(--color-sun) 14%, transparent);
-    border-radius: 6px;
-    padding: 0.15rem 0.35rem;
-    line-height: 1;
-  }
-  .node__body { display: flex; flex-direction: column; line-height: 1.15; }
-  .node__label {
-    font-size: 0.86rem;
-    font-weight: 500;
-    color: var(--color-paper);
-  }
-  .node__en {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.04em;
-    color: var(--color-mist);
-  }
-
-  @keyframes nodeGlow {
-    0% { opacity: 0.35; transform: translateY(6px); }
-    40% {
-      opacity: 1;
-      border-color: color-mix(in oklab, var(--color-sun) 70%, transparent);
-      box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-sun) 30%, transparent),
-        0 0 22px -2px color-mix(in oklab, var(--color-sun) 55%, transparent);
-    }
-    100% { opacity: 1; transform: none; box-shadow: none; }
-  }
-
-  .pipeline__caption {
-    margin-top: 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    color: var(--color-mist);
-    line-height: 1.6;
-  }
-
-  .pipeline--compact .node__en { display: none; }
+  @keyframes pl-node { to { opacity: 1; transform: none; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .node { animation: none; opacity: 1; }
-    .pipeline__spine::after { animation: none; opacity: 0.5; top: 0; height: 100%; }
+    .pipeline.is-draw .edge, .pipeline.is-draw .node {
+      animation: none; opacity: 1; stroke-dashoffset: 0; transform: none;
+    }
   }
 </style>
