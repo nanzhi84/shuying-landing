@@ -52,6 +52,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
   </head>
 
   <body>
+    <div id="scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--color-ink)] focus:px-4 focus:py-2 focus:text-[var(--color-paper)]">跳到主内容</a>
     <Nav />
     <main id="main" class={mainClass}>
@@ -60,14 +61,41 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <Footer />
 
     <script>
-      // 滚动进入动画（尊重 reduced-motion；无 JS 时元素默认可见）
-      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      // 渐进式:滚动揭示(子项错开)+ 流水线自绘 + 顶部进度线。
+      // 全部渐进增强:无 JS / reduced-motion 时,内容与图默认完整可见。
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // 1) 顶部滚动进度线(reduced-motion 也保留:仅反映滚动位置,非自发动效)
+      const bar = document.getElementById("scroll-progress");
+      if (bar) {
+        const updateBar = () => {
+          const h = document.documentElement;
+          const max = h.scrollHeight - h.clientHeight;
+          bar.style.width = max > 0 ? (h.scrollTop / max) * 100 + "%" : "0%";
+        };
+        document.addEventListener("scroll", updateBar, { passive: true });
+        window.addEventListener("resize", updateBar, { passive: true });
+        updateBar();
+      }
+
+      // 2) 滚动揭示;同一父级下的多个 [data-reveal] 若无显式 delay,按 DOM 序自动错开
+      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
       if (items.length && !reduce && "IntersectionObserver" in window) {
+        const delayFor = (el: HTMLElement) => {
+          if (el.dataset.revealDelay != null) return Number(el.dataset.revealDelay);
+          const parent = el.parentElement;
+          if (!parent) return 0;
+          const sibs = Array.from(parent.children).filter(
+            (c) => c instanceof HTMLElement && c.hasAttribute("data-reveal")
+          );
+          const i = sibs.indexOf(el);
+          return i > 0 ? i * 70 : 0;
+        };
         items.forEach((el) => {
           el.style.opacity = "0";
           el.style.transform = "translateY(20px)";
-          el.style.transition = "opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1)";
+          el.style.transition =
+            "opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1)";
         });
         const show = (el: HTMLElement, delay = 0) => {
           window.setTimeout(() => {
@@ -80,7 +108,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
             entries.forEach((e) => {
               if (e.isIntersecting) {
                 const el = e.target as HTMLElement;
-                show(el, Number(el.dataset.revealDelay || 0));
+                show(el, delayFor(el));
                 io.unobserve(el);
               }
             });
@@ -88,8 +116,25 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
           { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
         );
         items.forEach((el) => io.observe(el));
-        // 安全网：极端情况下（IO 不触发 / 打印 / 无头）2s 后强制全部可见
+        // 安全网:IO 不触发 / 打印 / 无头时 2s 后强制全部可见
         window.setTimeout(() => items.forEach((el) => show(el)), 2000);
+      }
+
+      // 3) 流水线自绘(滚入视口逐段画出);reduced-motion / 无 JS 时默认全部可见
+      const pls = document.querySelectorAll<HTMLElement>("[data-pipeline]");
+      if (pls.length && !reduce && "IntersectionObserver" in window) {
+        const pio = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-draw");
+                pio.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+        );
+        pls.forEach((el) => pio.observe(el));
       }
     </script>
   </body>
