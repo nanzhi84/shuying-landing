@@ -48,7 +48,7 @@
 
 `product.astro` 也用了 `<Pipeline />`(当前在 `lg:grid-cols-[0.9fr_1.1fr]` 的右半列里)。换成横向泳道后半宽列会挤,因此:
 
-- **决策(待 spec 复核确认):** 把 product 页该 section 的版式也改为「左/上文字说明 + 全宽泳道 Figure」,与首页一致(全站语言下沉)。
+- **决策(用户已确认):** 把 product 页该 section 的版式也改为「左/上文字说明 + 全宽泳道 Figure」,与首页一致(全站语言下沉)。
 - **兜底:** 无论容器多宽,泳道 SVG 外层包 `overflow-x:auto` + SVG `min-width`(约 820px),窄容器内横向滚动而非压扁,保证任何放置点都可读。
 
 ## 3. 改动二:删 Logo 图标,留文字字标
