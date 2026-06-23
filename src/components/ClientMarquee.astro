@@ -1,0 +1,52 @@
+---
+/**
+ * 客户背书跑马灯（暗场发光 · 纯 CSS 无限滚动 · 零 JS）。
+ * 数据来自 site.ts 的 clients；当前为「行业身份」占位，上线前替换为真实授权 logo/客户名。
+ */
+import { clients } from "../lib/site";
+const { eyebrow, title, rowA, rowB, placeholder } = clients;
+---
+
+<section class="endorse canopy-light">
+  <div class="u-container text-center">
+    <p class="eyebrow eyebrow--onink">{eyebrow}</p>
+    <h2 class="mx-auto mt-3 max-w-[24ch] text-[length:var(--text-display-sm)] text-[var(--color-paper)]">{title}</h2>
+  </div>
+  <div class="marquee mt-12">
+    <div class="track">
+      {[...rowA, ...rowA].map((name, i) => (
+        <span class="logo" aria-hidden={i >= rowA.length ? "true" : undefined}>
+          <span class="dot"></span>{name}
+        </span>
+      ))}
+    </div>
+  </div>
+  <div class="marquee mt-4">
+    <div class="track track--reverse">
+      {[...rowB, ...rowB].map((name, i) => (
+        <span class="logo" aria-hidden={i >= rowB.length ? "true" : undefined}>
+          <span class="dot"></span>{name}
+        </span>
+      ))}
+    </div>
+  </div>
+  {placeholder && (
+    <p class="note">\u25b8 \u5ba2\u6237\u300c\u884c\u4e1a\u8eab\u4efd\u300d\u5360\u4f4d \u00b7 \u4e0a\u7ebf\u524d\u66ff\u6362\u4e3a\u771f\u5b9e\u6388\u6743 logo \u6216\u5ba2\u6237\u540d</p>
+  )}
+</section>
+
+<style>
+  .endorse { padding-block: 4.5rem; overflow: hidden; }
+  .marquee { position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .track { display: flex; width: max-content; gap: 1.1rem; animation: marquee-l 38s linear infinite; }
+  .track--reverse { animation-name: marquee-r; animation-duration: 46s; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .logo { display: inline-flex; align-items: center; gap: 0.6rem; flex-shrink: 0; padding: 0.7rem 1.4rem; border-radius: 0.5rem; border: 1px solid color-mix(in oklab, var(--color-paper) 8%, transparent); background: color-mix(in oklab, var(--color-paper) 3%, transparent); font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap; color: var(--color-stone); transition: color .3s, border-color .3s, background .3s, transform .3s; }
+  .dot { width: 0.4rem; height: 0.4rem; border-radius: 999px; background: var(--color-pine); box-shadow: 0 0 0.5rem color-mix(in oklab, var(--color-pine) 70%, transparent); }
+  .logo:hover { color: var(--color-paper); border-color: color-mix(in oklab, var(--color-pine) 50%, transparent); background: color-mix(in oklab, var(--color-pine) 10%, transparent); transform: translateY(-2px); }
+  .logo:hover .dot { background: var(--color-pine-bright); box-shadow: 0 0 0.6rem var(--color-pine-bright); }
+  .note { text-align: center; margin-top: 2.2rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--color-stone-2); }
+  @keyframes marquee-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes marquee-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  @media (prefers-reduced-motion: reduce) { .track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; } .marquee { -webkit-mask-image: none; mask-image: none; } }
+</style>

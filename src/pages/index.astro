@@ -5,6 +5,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import CapabilityCard from "../components/CapabilityCard.astro";
 import DemoCard from "../components/DemoCard.astro";
 import { url } from "../lib/url";
+import ClientMarquee from "../components/ClientMarquee.astro";
 import { hero, manifesto, capabilities, loop, demos, stats, site } from "../lib/site";
 
 const stack = ["Python", "FastAPI", "Temporal", "PostgreSQL", "React"];
@@ -48,6 +49,8 @@ const stack = ["Python", "FastAPI", "Temporal", "PostgreSQL", "React"];
       </div>
     </div>
   </section>
+
+  <ClientMarquee />
 
   <!-- 我们是谁 -->
   <section class="u-container py-24 md:py-28">

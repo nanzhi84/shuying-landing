@@ -260,3 +260,12 @@ export const socials: NavItem[] = [
   { label: "GitHub", href: "https://github.com/nanzhi84", external: true },
   { label: "Email", href: "mailto:hello@shuying.ai", external: true },
 ];
+
+/** 客户背书跑马灯数据（首页信任带）。⚠ 占位：上线前替换为真实授权客户 logo/名称。 */
+export const clients = {
+  eyebrow: "TRUSTED BY TEAMS THAT SHIP",
+  title: "被需要确定性量产的品牌与团队选择。",
+  placeholder: true,
+  rowA: ["新消费品牌", "MCN 机构", "出海 DTC", "教育科技", "文旅集团", "本地生活", "3C 数码", "美妆个护"],
+  rowB: ["智能硬件", "连锁餐饮", "金融服务", "汽车出行", "医疗健康", "游戏发行", "SaaS 工具", "时尚服饰"],
+};
