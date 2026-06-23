@@ -3,7 +3,7 @@
 > Case-first 数字人短视频内容生产系统 **Cutagent** 的官方静态站点。
 > 简洁、自然、面向 B 端与投资人；内置兼容图片 / 视频（带图注 caption）的 Markdown 技术博客。
 
-基于 **Astro 6 + MDX + Tailwind CSS v4**，输出纯静态 HTML，近零 JavaScript，可一键部署到 GitHub Pages、Vercel 或任意静态托管。
+基于 **Astro 5 + MDX + Tailwind CSS v4**，输出纯静态 HTML，近零 JavaScript，可一键部署到 GitHub Pages、Vercel 或任意静态托管。
 
 ---
 

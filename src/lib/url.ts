@@ -15,3 +15,9 @@ export function url(path = "/"): string {
 export function asset(path: string): string {
   return url(path);
 }
+
+/** 媒体智能前缀：本地绝对路径过 base，远程(http/data)原样返回 */
+export function mediaSrc(path: string): string {
+  if (/^(https?:)?\/\//.test(path) || path.startsWith("data:")) return path;
+  return asset(path);
+}

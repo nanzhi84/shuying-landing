@@ -26,7 +26,10 @@ const {
   muted = false,
   wide = false,
 } = Astro.props;
+import { mediaSrc } from "@/lib/url";
 const isHls = src.endsWith(".m3u8");
+const rSrc = mediaSrc(src);
+const rPoster = poster ? mediaSrc(poster) : undefined;
 ---
 
 <figure class={`not-prose my-9 ${wide ? "md:-mx-16 lg:-mx-24" : ""}`}>
@@ -39,13 +42,13 @@ const isHls = src.endsWith(".m3u8");
       controls
       preload="metadata"
       playsinline
-      poster={poster}
+      poster={rPoster}
       autoplay={autoplay || undefined}
       loop={loop || undefined}
       muted={muted || autoplay || undefined}
-      data-hls={isHls ? src : undefined}
+      data-hls={isHls ? rSrc : undefined}
     >
-      {!isHls && <source src={src} />}
+      {!isHls && <source src={rSrc} />}
       您的浏览器不支持 HTML5 视频。
     </video>
   </div>

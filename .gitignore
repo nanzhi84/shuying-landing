@@ -18,3 +18,6 @@ pnpm-debug.log*
 *.local
 .vscode/
 .idea/
+
+# 临时预览图
+预览-*.png

@@ -10,12 +10,14 @@ interface Props {
   wide?: boolean;
   credit?: string;
 }
+import { mediaSrc } from "@/lib/url";
 const { src, alt = "", caption, wide = false, credit } = Astro.props;
+const resolvedSrc = mediaSrc(src);
 ---
 
 <figure class={`not-prose my-9 ${wide ? "md:-mx-16 lg:-mx-24" : ""}`}>
   <img
-    src={src}
+    src={resolvedSrc}
     alt={alt}
     loading="lazy"
     decoding="async"
