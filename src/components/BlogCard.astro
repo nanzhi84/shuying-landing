@@ -20,7 +20,7 @@ const href = url(`/blog/${id}`);
 ---
 
 <article class:list={["group", featured && "md:col-span-2"]} data-reveal>
-  <a href={href} class="flex h-full flex-col overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[var(--color-card)] transition-all duration-500 hover:-translate-y-1 hover:border-[color-mix(in_oklab,var(--color-pine)_40%,transparent)] hover:shadow-[0_24px_60px_-44px_rgba(20,36,28,0.6)]">
+  <a href={href} class="panel flex h-full flex-col overflow-hidden">
     <div class:list={["relative overflow-hidden", featured ? "aspect-[2.4/1]" : "aspect-[16/10]"]}>
       {data.cover ? (
         <img src={asset(data.cover)} alt={data.coverAlt || data.title} loading="lazy" decoding="async"
