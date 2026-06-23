@@ -44,15 +44,15 @@ const whyNow = [
   </section>
 
   <!-- 价值观 -->
-  <section class="border-y border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
+  <section class="border-y border-[color-mix(in_oklab,var(--color-paper)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
     <div class="u-container py-24 md:py-28">
       <SectionHeading eyebrow="WHAT WE BELIEVE" title="四条不妥协的原则。" class="mb-14 max-w-2xl" />
       <div class="grid gap-5 sm:grid-cols-2">
         {values.map((v, i) => (
-          <div class="flex gap-5 rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal data-reveal-delay={i * 70}>
+          <div class="flex gap-5 rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal data-reveal-delay={i * 70}>
             <span class="font-[var(--font-mono)] text-[1.05rem] font-medium text-[var(--color-sun)]">{String(i + 1).padStart(2, "0")}</span>
             <div>
-              <h3 class="text-[1.15rem] font-semibold text-[var(--color-ink)]">{v.title}</h3>
+              <h3 class="text-[1.15rem] font-semibold text-[var(--color-paper)]">{v.title}</h3>
               <p class="mt-2.5 text-[0.95rem] leading-relaxed text-[var(--color-stone)]">{v.desc}</p>
             </div>
           </div>
@@ -64,11 +64,11 @@ const whyNow = [
   <!-- Why now -->
   <section class="u-container py-24 md:py-28">
     <SectionHeading eyebrow="WHY NOW" title="为什么是现在。" lead="三条曲线正在交汇 —— 这是定义品类的窗口期。" class="mb-14 max-w-2xl" />
-    <div class="grid gap-px overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] md:grid-cols-3">
+    <div class="grid gap-px overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] md:grid-cols-3">
       {whyNow.map((w) => (
         <div class="bg-[var(--color-card)] p-8" data-reveal>
           <p class="eyebrow eyebrow--dim">{w.k}</p>
-          <h3 class="mt-4 text-[1.2rem] font-semibold text-[var(--color-ink)]">{w.t}</h3>
+          <h3 class="mt-4 text-[1.2rem] font-semibold text-[var(--color-paper)]">{w.t}</h3>
           <p class="mt-3 text-[0.95rem] leading-relaxed text-[var(--color-stone)]">{w.d}</p>
         </div>
       ))}

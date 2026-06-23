@@ -8,7 +8,7 @@ interface Props {
   class?: string;
 }
 const { eyebrow, title, lead, tone = "ink", align = "left", class: cls = "" } = Astro.props;
-const titleColor = tone === "paper" ? "text-[var(--color-paper)]" : "text-[var(--color-ink)]";
+const titleColor = tone === "paper" ? "text-[var(--color-paper)]" : "text-[var(--color-paper)]";
 const leadColor = tone === "paper" ? "text-[var(--color-mist)]" : "text-[var(--color-stone)]";
 ---
 

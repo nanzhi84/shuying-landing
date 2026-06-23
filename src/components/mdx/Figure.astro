@@ -19,7 +19,7 @@ const { src, alt = "", caption, wide = false, credit } = Astro.props;
     alt={alt}
     loading="lazy"
     decoding="async"
-    class="w-full rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-paper-2)]"
+    class="w-full rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[var(--color-paper-2)]"
   />
   {(caption || credit) && (
     <figcaption class="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 px-1 text-[0.82rem] leading-relaxed text-[var(--color-stone)]">

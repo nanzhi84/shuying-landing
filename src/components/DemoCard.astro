@@ -12,7 +12,7 @@ const aspect = demo.ratio === "9:16" ? "9 / 16" : "16 / 9";
 
 <figure class="group flex flex-col" data-reveal>
   <div
-    class="relative overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-ink)]"
+    class="relative overflow-hidden rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[var(--color-ink)]"
     style={`aspect-ratio:${aspect}`}
   >
     {src ? (
@@ -50,7 +50,7 @@ const aspect = demo.ratio === "9:16" ? "9 / 16" : "16 / 9";
   </div>
 
   <figcaption class="mt-4">
-    <h3 class="text-[1.05rem] font-semibold text-[var(--color-ink)]">{demo.title}</h3>
+    <h3 class="text-[1.05rem] font-semibold text-[var(--color-paper)]">{demo.title}</h3>
     <p class="mt-1.5 text-[0.9rem] leading-relaxed text-[var(--color-stone)]">{demo.desc}</p>
   </figcaption>
 </figure>

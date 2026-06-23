@@ -35,10 +35,10 @@ const { data } = Astro.props;
         {data.tags.map((t) => <span class="text-[var(--color-pine)]">#{t}</span>)}
       </div>
 
-      <h1 class="mt-4 text-[2.1rem] font-bold leading-[1.12] text-[var(--color-ink)] md:text-[2.7rem]">{data.title}</h1>
+      <h1 class="mt-4 text-[2.1rem] font-bold leading-[1.12] text-[var(--color-paper)] md:text-[2.7rem]">{data.title}</h1>
       <p class="mt-5 text-[1.12rem] leading-relaxed text-[var(--color-stone)]">{data.description}</p>
 
-      <div class="mt-7 flex items-center gap-3 border-t border-[color-mix(in_oklab,var(--color-ink)_9%,transparent)] pt-6">
+      <div class="mt-7 flex items-center gap-3 border-t border-[color-mix(in_oklab,var(--color-paper)_9%,transparent)] pt-6">
         <span class="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-ink)] font-[var(--font-display)] text-[0.8rem] font-semibold text-[var(--color-paper)]">树</span>
         <span class="text-[0.9rem] text-[var(--color-stone)]">{data.author}</span>
       </div>
@@ -46,7 +46,7 @@ const { data } = Astro.props;
 
     {data.cover && (
       <div class="u-container mt-10 max-w-4xl">
-        <img src={asset(data.cover)} alt={data.coverAlt || data.title} class="w-full rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)]" />
+        <img src={asset(data.cover)} alt={data.coverAlt || data.title} class="w-full rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)]" />
       </div>
     )}
 

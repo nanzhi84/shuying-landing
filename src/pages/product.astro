@@ -28,7 +28,7 @@ const principles = [
   <!-- 头部 -->
   <section class="u-container pb-4 pt-20 md:pt-28">
     <p class="eyebrow mb-4">THE PRODUCT</p>
-    <h1 class="max-w-4xl text-display font-bold leading-[1.06] text-[var(--color-ink)]">
+    <h1 class="max-w-4xl text-display font-bold leading-[1.06] text-[var(--color-paper)]">
       一套把脚本变成成片的<br class="hidden md:block" />工业级内容流水线。
     </h1>
     <p class="mt-7 max-w-2xl text-[1.1rem] leading-relaxed text-[var(--color-stone)]">
@@ -38,7 +38,7 @@ const principles = [
 
   <!-- 完整流水线 -->
   <section class="u-container py-16">
-    <div class="canopy-light rounded-3xl border border-[color-mix(in_oklab,var(--color-ink)_30%,transparent)] px-6 py-12 text-[var(--color-paper)] md:px-12">
+    <div class="canopy-light rounded-3xl border border-[color-mix(in_oklab,var(--color-paper)_30%,transparent)] px-6 py-12 text-[var(--color-paper)] md:px-12">
       <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <p class="eyebrow eyebrow--onink mb-4">THE 16 NODES</p>
@@ -66,7 +66,7 @@ const principles = [
   </section>
 
   <!-- 降级哲学 -->
-  <section class="border-y border-[color-mix(in_oklab,var(--color-ink)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
+  <section class="border-y border-[color-mix(in_oklab,var(--color-paper)_8%,transparent)] bg-[color-mix(in_oklab,var(--color-paper-2)_50%,var(--color-paper))]">
     <div class="u-container py-20 md:py-24">
       <SectionHeading
         eyebrow="WHY IT'S TRUSTWORTHY"
@@ -76,9 +76,9 @@ const principles = [
       />
       <div class="grid gap-5 md:grid-cols-3">
         {principles.map((p) => (
-          <div class="rounded-2xl border border-[color-mix(in_oklab,var(--color-ink)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal>
+          <div class="rounded-2xl border border-[color-mix(in_oklab,var(--color-paper)_10%,transparent)] bg-[var(--color-card)] p-7" data-reveal>
             <p class="eyebrow eyebrow--dim !tracking-[0.12em]">{p.tag}</p>
-            <h3 class="mt-4 text-[1.15rem] font-semibold text-[var(--color-ink)]">{p.title}</h3>
+            <h3 class="mt-4 text-[1.15rem] font-semibold text-[var(--color-paper)]">{p.title}</h3>
             <p class="mt-3 text-[0.92rem] leading-relaxed text-[var(--color-stone)]">{p.desc}</p>
           </div>
         ))}

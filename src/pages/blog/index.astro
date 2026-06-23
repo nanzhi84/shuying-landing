@@ -13,7 +13,7 @@ const [featured, ...rest] = posts;
 <BaseLayout title="博客" description={`${site.nameCN}技术博客 —— 关于可信内容流水线、确定性渲染、Case 自进化与 AI 内容基础设施的工程笔记。`}>
   <section class="u-container pb-4 pt-20 md:pt-28">
     <p class="eyebrow mb-4">FIELD NOTES</p>
-    <h1 class="max-w-3xl text-display font-bold leading-[1.06] text-[var(--color-ink)]">技术博客</h1>
+    <h1 class="max-w-3xl text-display font-bold leading-[1.06] text-[var(--color-paper)]">技术博客</h1>
     <p class="mt-6 max-w-xl text-[1.1rem] leading-relaxed text-[var(--color-stone)]">
       关于可信内容流水线、确定性渲染、Case 自进化与 AI 内容基础设施的工程笔记。从最新一篇开始。
     </p>
@@ -21,7 +21,7 @@ const [featured, ...rest] = posts;
 
   <section class="u-container py-12">
     {posts.length === 0 ? (
-      <div class="rounded-2xl border border-dashed border-[color-mix(in_oklab,var(--color-ink)_18%,transparent)] p-16 text-center">
+      <div class="rounded-2xl border border-dashed border-[color-mix(in_oklab,var(--color-paper)_18%,transparent)] p-16 text-center">
         <p class="font-[var(--font-mono)] text-[0.85rem] text-[var(--color-stone)]">// 博客即将上线，敬请期待</p>
       </div>
     ) : (
